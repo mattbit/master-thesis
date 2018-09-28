@@ -1,0 +1,42 @@
+% !TEX program = xelatex
+\documentclass{mthesis}
+\usepackage{amsmath,amssymb,bm}
+\usepackage[british]{babel}
+\usepackage{import}
+\usepackage[page,title]{appendix}
+
+\usepackage{csquotes}
+\usepackage[backend=bibtex,style=numeric]{biblatex}
+\addbibresource{_bibliography.bib}
+
+
+
+% Title page
+\title{Analysis and modelling of biophysical processes\\from single-particle tracking data}
+\author{Matteo Dora}
+
+\hypersetup{pdftitle={Analysis and modelling of biophysical processes}}
+\hypersetup{pdfauthor={Matteo Dora}}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\import{_chapters/}{1_introduction}
+\import{_chapters/}{2_data_analysis}
+\import{_chapters/}{3_modelling}
+\import{_chapters/}{conclusions}
+
+\begin{appendices}
+  \chapter{Brownian motion and Langevin's equation}
+  \chapter{Elements of graph theory}
+\end{appendices}
+
+\nocite{*}
+\addcontentsline{toc}{chapter}{Bibliography}
+\printbibliography
+
+
+\end{document}

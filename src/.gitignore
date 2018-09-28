@@ -1,0 +1,15 @@
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.fls
+*.bib
+*.toc
+*.fdb_latexmk
+*.synctex.gz
+
+thesis.run.xml
+thesis.txt
+thesis.pdf
+thesis.sdx
