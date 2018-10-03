@@ -1,0 +1,658 @@
+MASTER 2 INTERNSHIP REPORT • JUNE 2018
+
+Analysis and modelling of biophysical
+processes from single-particle tracking
+data
+Matteo Dora
+Université Pierre et Marie Curie — Paris, France
+
+Abstract
+Super-resolution single-article tracking provides a huge amount of new
+data about biological systems. Here I describe statistical methods and data
+analysis techniques to extract relevant biophysical features from SPT data.
+Secondly, I consider a model describing the motion of particles on the endoplasmic reticulum and present the results of numerical simulations.
+
+Contents
+1 Extraction of biophysical features from SPT data
+1.1 Effective dynamical model . . . . . . . . . . . . .
+1.2 Diffusion and velocity field estimation . . . . . . .
+1.3 Field smoothening . . . . . . . . . . . . . . . . .
+1.4 Regions of coherent motion . . . . . . . . . . . .
+1.5 Potential wells . . . . . . . . . . . . . . . . . . . .
+1.6 Linking coherent motion regions to potential wells
+1.7 Multiscale analysis . . . . . . . . . . . . . . . . .
+
+.
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+
+.
+.
+.
+.
+.
+.
+.
+
+3
+3
+4
+5
+5
+6
+7
+7
+
+2 Modelling motion on the endoplasmic reticulum
+10
+2.1 Network structures . . . . . . . . . . . . . . . . . . . . . . . . 11
+2.2 Mean first passage time . . . . . . . . . . . . . . . . . . . . . . 12
+2.3 Extreme first passage time . . . . . . . . . . . . . . . . . . . . 12
+3 Conclusions
+
+17
+
+1
+
+Introduction
+Super-resolution microscopy has become, with recent developments, a fundamental source of data in the field of biology. On top of this, imaging techniques like PALM have been combined with single-particle tracking [8], allowing to reconstruct thousands of simultaneous particle trajectories at increasingly high spatiotemporal resolution. With the availability of this large
+quantity of information, new data analysis techniques are needed to extract
+relevant biophysical features that can give new insights on the biological processes. Existing knowledge from physics and mathematics can provide a
+solid base to build a toolset of statistical and analytical methods to accomplish
+this goal. Langevin’s equation and stochastic processes have been extensively—
+and successfully—used to model the dynamics of biological systems [12]. Likewise, regression and unsupervised learning algorithms represent a powerful tool to classify and analyze the large amount of data produced by singleparticle tracking. Valuable insights can be obtained by carefully joining data
+driven methods and theoretical modelling. Either approaches are valid but
+may not be sufficient, per se, to reveal the inner significance of certain processes; their combination can instead provide hints about the deeper mechanisms of life. Redundancy, for example, seems to be a fundamental principle in many biological processes, as the joint application of narrow escape
+model and numerical simulations has suggested [11, 13, 1]. Yet to be understood problems in biology can benefit hugely from this twofold approach.
+Gathering of high resolution datasets paves the way to new and promising
+discoveries. On the other hand, data is useless without a solid framework to
+analyse and explain it. Overwhelming availability of data can even be counterproductive, as it makes the extraction of meaningful patterns more complicated. Dealing with this challenges is going to be, in the very near future,
+one of the major efforts in all fields of scientific research.
+Here I will present some results regarding data analysis, modelling and
+numerical simulations. The fil rouge connecting the whole work is the search
+for explanation of the dynamics of amyloid beta (Aβ) aggregates in neurons,
+which are known to be involved in Alzheimer’s disease [2].
+This report is organized in two parts. Section 1 is about analysis of SPT
+data. While the dataset used here specifically concerns Aβ aggregates, the
+final aim is to build a general methodological framework to allow the extraction of biophysical features from SPT recordings. Based on the analysis of the
+amyloid beta data, a preliminary model of motion involving the endoplasmic
+reticulum (ER) has been developed by Holcman’s team [4]. Following these
+results, section 2 regards numerical simulations that I developed to better
+understand the biological implications of the model.
+
+2
+
+1 Extraction of biophysical features from SPT data
+Modern imaging methods such as PALM or STORM have made possible to
+track simultaneously multiple particles at high spatiotemporal resolution.
+Single-particle tracking (SPT) techniques can then be used to reconstruct thousands of particle trajectories. To extract meaningful insights from this huge
+amount of data, we need a modelling and statistical framework.
+The data presented here was provided by the Molecular Neuroscience
+Group at the University of Cambridge, UK. It consists into trajectory fragments of amyloid beta aggregates observed in HEK 293T cells. Nevertheless,
+the statistical methods described in the following provide a general framework to extract dynamical parameters of particles at cell scale. The SPT trajectories were in most cases provided by the Molecular Neuroscience Group
+and sometimes obtained from imaging data using the TrackMate software
+[15]. The tools developed to extract biophysical features were implemented
+into a Python package @todo:cite, which allows to flexibly analyse new datasets.
+
+1.1 Effective dynamical model
+At the microscopic level, the motion of the molecules can be described by
+Langevin’s equation. In the case of biological processes we are interested in,
+the Langevin dynamics can be considered in its large friction limit (Smoluchowski’s equation) [7, 5]
+F (x) √
+ẋ =
++ 2Dẇ
+(1)
+γ
+where F (x) is the drift force exerted on the particle at position x, γ is the friction coefficient, D is the diffusion coefficient and w(t) is a two-dimensional
+Wiener process. At this scale, it makes sense to consider the diffusion to be
+mainly due to thermal agitation so that it can be considered isotropic.
+However, it is not possible to directly recover the microscopic model from
+the SPT data, since we miss information about the local behaviour both in
+space (such as the presence of microscopic obstacles undetected by the imaging device) and time (such as thermal fluctuations much faster than the acquisition timescale). We can still build a coarse-grained model [7, 5], transforming eq. 1 into the effective stochastic equation
+√
+ẋ = a(x) + 2B ẇ
+(2)
+where a(x) is the effective velocity field and D ≡ B T B is the effective diffusion tensor. It must be noted that, in principle, the effective diffusion coefficient may not be isotropic since it takes into account the local microscopic
+features (e.g. obstacles). On the other hand, actual analysis of the data show
+that anisotropic components are negligible: in the following, the diffusion
+3
+
+a
+
+1 μm
+
+c
+
+b
+
+1 μm
+
+1 μm
+
+Figure 1 Velocity field smoothening on a grid of size 250 nm. (a) original velocity field,
+(b) velocity field after the smoothening, (c) Regions of coherent motion on a grid of size
+500 nm. The angular distance threshold was set to 0.08 and clusters smaller than 10 bins
+were discarded. The area color indicates the mean angle of the velocity among the cluster.
+
+tensor is reduced for simplicity to a scalar coefficient by averaging on the diagonal entries. Moreover, the velocity field is assumed time invariant in the
+relatively short time window spanned by the SPT data (30–60 s).
+
+1.2 Diffusion and velocity field estimation
+To estimate the dynamical parameters of eq. 2 a statistical analysis is needed.
+We follow the approach demontrated in [7, 5, 6, 3] by partitioning the data in
+a square grid with fixed bin size (@todo: figure). The velocity field and diffusion coefficients are considered constant in each bin. However, we take
+a different approach concerning the statistical estimators. Instead of stopping at the first order in the acquisition time interval ∆t, we consider the full
+statistical distribution of the parameters.
+If the acquisition time interval is sufficiently small, the process described
+by eq. 2 can be discretized following a forward Euler scheme:
+√
+xt+1 − xt = a(xt )∆t + 2∆tD(xt )ηt
+(3)
+where ∆t is the acquisition time interval.
+Then, the trajectory step ∆xt ≡ xt+1 − xt starting in bin B is a normally
+distributed random variable with mean a(xB ) and variance 2D(xB )∆t where
+xB is the center of the bin. The velocity field and diffusion tensor can thus
+be recovered by computing the empirical estimate of the moments:
+1
+EB [∆x]
+∆t
+[
+]
+)
+1 (
+EB ∆x2 − EB [∆x]2
+D(xB ) =
+2∆t
+a(xB ) =
+
+4
+
+(4)
+(5)
+
+where the expected value is taken on the bin.
+
+1.3 Field smoothening
+To perform analysis and simulations we often need a smooth representation
+of the velocity or diffusion field, provinding also estimations for bins with few
+or missing data. To solve this problem, a convolution with variable kernel is
+applied on the field. Denoting by nB the number of datapoints inside bin B,
+the smoothened field ã is obtained as
+∑
+nS a(xS )
+ã(xB ) = (k ∗ a)(xB ) ≡
+
+S∈Γ(B)
+
+∑
+
+nS ′
+
+(6)
+
+S ′ ∈Γ(B)
+
+where Γ(B) is the Moore neighbourhood of B.
+Explicitly, representing bins with their grid site indices, the kernel matrix
+K(i, j) centered in the bin i, j is:
+
+
+ni−1,j−1 ni−1,j ni−1,j+1
+1
+ ni,j−1
+ni,j
+ni,j+1 
+(7)
+K(i, j) =
+j+1
+i+1 ∑
+∑
+ni+1,j−1 ni+1,j ni+1,j+1
+nk,l
+k=i−1 l=j−1
+
+Finally, bins such that the total number of samples in their Moore neighbourhood is lower than a threshold are excluded from the analysis.
+This approach can be interpreted in terms of Bayesian inference, where
+the prior (Gaussian) distribution of the parameter of interest is based on the
+distributions in the neighbouring bins. The mean estimator on the posterior
+is then obtained by averaging the means of the neighbours with a weight proportional to the number of samples.
+
+1.4 Regions of coherent motion
+Regions of coherent motion are identified by clustering adjacent bins based
+on the angular distance of the velocity vectors. The angular distance between
+two vectors u and v is defined as:
+(
+)
+1
+u·v
+distance(u, v) ≡ arccos
+(8)
+π
+∥u∥∥v∥
+A very simple algorithm works as follows:
+1. Create an empty cluster (i.e. a set of adjacent bins) for each bin in the
+grid and assign the bin to it.
+5
+
+2. For every bin B, consider each neighbouring bin S ∈ Γ(B). If the angular distance between ã(xB ) and ã(xS ) is lower than a given threshold,
+merge the clusters of B and S.
+This extremely simple clustering method is quite effective in localising correlated motion and can be easily extended to also consider time evolution.
+The identification of regions of coherent motion can have relevant application in many biological contexts. As an example, coherent motion regions
+have been observed in interphase chromatin [16], @todo new hypothesis about
+its biological functions.
+
+1.5 Potential wells
+To identify local attractors we use the methodology and formalism developed
+in [7, 10]. Considering the velocity field to be locally conservative, it can be
+described by the gradient of a scalar potential:
+a(x) = −∇U (x)
+
+(9)
+
+Local attractors can then be seen as wells in the potential. At first non-zero
+order around a local minumum x0 the potential is a paraboloid:
+[
+]
+(x − x0 )2 (y − y0 )2
+U (x, y) = U0 + A
++
++ O(x, y)2
+(10)
+rx2
+ry2
+in a coordinate system (x, y) where the axes are rotated by an angle φ to match
+those of the paraboloid. A potential well is thus by the set of parameters A
+(well depth), x0 (centre), r1 , r2 (axes of the ellipse obtained by cutting the
+potential well at height A), and φ (the angle of the ellipse major axis).
+If the diffusion coefficient is assumed to be locally constant, the particle
+density is described by the Boltzmann distribution
+(
+)
+U (x, y)
+ρ(x, y) ∝ exp −
+(11)
+D
+Substituting eq. 10, the density around a local minimum is approximately
+Gaussian. Thus, after selecting a small high density region, principal component analysis (PCA) can be used to approximate the location of the attractor
+(x0 ) and the ellipse parameters (φ, r1 , r2 ) corresponding to the 95% confidence ellipse.
+To find the remaining parameter A an iterative procedure is used. A grid
+centered in x0 is built, and for each iteration k an ellipse Ek with increasingly
+longer axis is obtained by rescaling the original confidence ellipse. At each
+iteration, we calculate the Ak that minimize the mean squared error (MSE)
+with respect to the velocity field of all the bins inside E:
+∑
+MSEk =
+∥ − ∇U (xi ) − a(xi )∥2
+(12)
+xi ∈Ek
+
+6
+
+a
+
+c
+
+b
+
+Figure 2 Other features. (a) coherent motion regions with main axis highlighted; (b)
+graph reconstructed by linking potential wells and regions of coherent motion;
+
+The best fit for A is then the Ak corresponding to the iteration with minimal
+MSE.
+A parabolic error score S indicating how much the potential well resembles
+a paraboloid is defined as
+S≡∑
+
+MSEk
+2
+xi ∈Ek ∥a(xi )∥
+
+(13)
+
+where S ∈ [0, 1] and S = 0 indicates a perfect fit.
+The initial high density regions are localized by using the DBSCAN clustering algorithm.
+
+1.6 Linking coherent motion regions to potential wells
+It is possible to obtain a rough dynamical map of the cell by connecting the
+regions of coherent motion and the potential wells to form a directed graph.
+First, the axis corresponding to the average direction of each region is computed; then the endpoints of the regions are connected to other endpoints or
+potential wells that are found in a small neighbourhood. The result is visible
+in figure 2.
+This can provide a new way to understand the macroscopic dynamical
+structure of the cell, relative to the observed molecule.
+
+1.7 Multiscale analysis
+To investigate how the scale influences the detection of the features, the methods described in the previous sections were applied on different grid sizes.
+
+7
+
+Regions of coherent drift, given their non-locality, tends to persist across
+different choices of the grid size. Also, as the grid size is increased, the clusters
+expand.
+The localization of potential wells is instead very sensible to the grid size.
+This is expected and confirms their local nature. As the grid size is reduced,
+more and more local minima of the potential are found. The average error
+score of the wells is slightly decreasing as the grid size increases. This may be
+due the higher noise present at small grid sizes, where number of datapoints
+in each bin is smaller.
+
+8
+
+a
+
+b
+
+c
+
+d
+
+e
+
+f
+
+g
+
+h
+
+i
+
+j
+
+Figure 3 Overview of multiscale characteristics for the two datasets (D1, D2). (a), (b), (c)
+potential well detections in a subregion of dataset 2 at grid size of 100 nm, 300 nm, 500 nm
+respectively; (d), (e), (f) regions of coherent motion in a subregion of dataset 2 for gridsizes
+100 nm, 300 nm, 500 nm respectively; (g) number of regions of coherent motion detected;
+9
+(h) distribution of the areas of the regions of coherent
+motion; (i) number of potential wells
+with error score lower than 0.75; (j) average error score of potential wells at different grid
+sizes.
+
+2 Modelling motion on the endoplasmic reticulum
+Analysis of SPT data for amyloid beta aggregates in multiple cells types [4] has
+revealed a 2-state like dynamics, where particles jump at high speed between
+low velocity diffusive regions. Identifying the low speed regions as nodes
+and the jumps as edges, it is possible to reconstruct a network structure. The
+characteristics of this network seem compatible to those of the endoplasmic
+reticulum (ER), suggesting that amyloid beta aggregates may move on it. The
+ER is a wide network-like organelle that spans from the nuclear envelope to
+the cell periphery. It has a fundamental role in protein maturation and trafficking, altough it takes a role in various other cellular processes [@todo: add
+examples]. A recent study based on superresolution imaging [9] has revealed
+in its entirety the ER network structure, made amost exclusively of tubules
+at varying densities. However, the characteristics of molecule transport remain unclear. How are molecules redistributed in the ER? Which timescale
+characterise this transport process? To answer these questions, we consider
+two models that describe the motion on an ER-like graph.
+Undirected model A toy model where particles move randomly from node
+to node through undirected edges. Each particle waits an exponential time
+in each node (timescale τnode ), and then randomly jumps to one of the three
+neighbours. The exponential waiting represents the time required to escape
+from a confined diffusive region (the node) through the small window that
+connects it to the high drift tubule, as described by the narrow escape theory
+[14].
+Switching model A more elaborated model that takes into account the effect of tubule constrictions (observed in imaging data). The network graph is
+directed but each edge inverts its direction at a Poissonian rate. This means
+that the edge will keep a directionality for an exponential time (timescale
+τswitch ), then reverse it, and so on and so forth. Particles travelling in the network wait an exponential time in each node (τnode ) and then jump randomly
+through one of the available outward directed edges. If all the edges happen
+to be directed inwards, the particle is trapped and has to wait another exponential time in the node.
+Starting from these models, I developed numerical simulations to understand
+the effect that model parameters have on the transport process. Two main
+quantities have important biological implications: the mean first passage
+time (MFPT) through a given node for a single particle; the average time required for the first particle among a group to reach a given node. This second
+case models an activation process where many particles are released from a
+source but one is sufficient to activate a receptor located in a far away node.
+
+10
+
+Figure 4 Representation of the switching model.
+
+Structure
+Hexagonal lattice
+Periodic hexagonal lattice
+Reconstructed ER graph
+Table 1
+
+# of nodes
+2046
+1984
+1920
+
+# of edges
+3006
+2976
+2787
+
+Radius
+47
+47
+41
+
+Avg degree
+2.94
+3
+2.90
+
+Network structure statistics.
+
+2.1 Network structures
+Regions at the periphery of the ER are made by a network of tubules with
+roughly three-way junctions. We can thus model the ER as graph where nodes
+have average degree 3. While one can easily generate random graphs fullfilling this requirement by means of relatively easy algorithms, these structures usually lack a clear spatial structure, since each node may be connected
+to any other node regardless of its position. To overcome the problems of the
+random graphs and to simplify a possible analytical study of the system, we
+limit our analysis to planar graphs. In the following, we will use an hexagonal
+lattice (in both finite and periodic variations) to provide an abstract representation of the ER. Finally, we can reconstruct a planar graph from SPT data
+as demonstrated in [parrutto_er] and compare its characteristics to those of
+the abstract lattices. Examples of the three structures are shown in figs. 5a
+to 5c; characteristics of the graphs are summarized in table 1.
+
+11
+
+2.2 Mean first passage time
+Considering a particle moving on graph starting from node S, the first passage time (or hitting time) for node T is the time at which the particle first
+hits the target T . Formally,
+τS→T (X) = inf {t : X(t) = T | X(0) = S}
+
+(14)
+
+where X(t) denotes the location of the particle at time t. [@todo: fix definition] It follows that, if X(t) describes a stochastic motion, we can define the
+mean first passage time τ̄ as
+τ̄S→T = EX [τS→T (X) | X(0) = S]
+
+(15)
+
+where the expectation is taken over many realization of the process.
+
+2.3 Extreme first passage time
+We now consider a more general case, where N particles move simultaneously on the network, starting from the same source node S. In this case, we
+may be interested in knowing the average time required for the first among
+the N particles to hit the target T . This is a common situation in biological
+systems, where a single particle—or just few of them—can activate a receptor.
+We define this as the minimum hitting time among N processes:
+ex
+τS→T
+(N ) = min {τS→T (X1 ), τS→T (X2 ), . . . , τS→T (XN )}
+
+(16)
+
+We can then take the average over many realizations of this multiple-particle
+process to define
+ex
+ex
+τ̄S→T
+(N ) = E{X1 ,X2 ,...,XN } [τS→T
+(N )]
+
+(17)
+
+We name this last quantity the extreme first passage time (EFPT).
+@todo: - timescale much smaller - convergence towards optimal trajectory - 1/logN behaviour of tau ex as in continuous case (cite Kanishka)
+- frequency of trapping not sufficient to justify timescale
+
+12
+
+a Reconstructed ER network
+
+b Hexagonal lattice
+
+c Periodic hexagonal lattice
+
+d
+
+e
+
+f
+
+g
+
+h
+
+i
+
+Figure 5 Network structures and simulation results for MFPT τ S (X) from source node S
+to target node X. Network structure statistics are summarized in table ??. Simulation parameters are indicated in table ??. (a) ER network reconstructed from data. (b) Hexagonal
+lattice. (c) Hexagonal lattice with periodic boundary conditions. (d) ER network reconstructed from the data. Boundary effects are visible at the extremal regions which are badly
+connected to the bulk of the network. (e) Squared hexagonal lattice. The source node is
+circled in red. The boundary effect in the corners make the MFPT diverge. (f) Periodic
+hexagonal lattice (boundary nodes are connected to those at the opposite boundary). At
+a relatively small distance from the source node the MFPT becomes almost constant. (g),
+(h), (i) MFPT by distance from the source (S) for reconstructed ER, hexagonal lattice, and
+periodic hexagonal lattice respectively.
+
+13
+
+a
+
+b
+
+c
+
+Figure 6 Effects of the switching timescale (τswitch ) on the average MFPT by distance and
+on the cover time CS (i.e. the average time needed to visit all the nodes starting from node
+S), measured in the periodic hexagonal lattice. (a) MFPT by distance for different switching
+timescales. (b) Cover time as function of the switching timescale. (c) Detail of the cover
+time for small values of τ .
+
+14
+
+a Reconstructed ER network
+
+b Hexagonal lattice
+
+c Periodic hexagonal lattice
+
+d
+
+e
+
+f
+
+Figure 7
+
+15
+
+a N = 100
+
+c N = 10000
+
+b N = 1000
+
+d Distribution of lengths
+
+e
+
+f Effect of number of particles on τ ex
+
+g Frequency of trapping
+
+Figure 8
+
+16
+
+3 Conclusions
+@todo: - biological processes rely on extreme statistics - importance of redundance in biological processes
+
+References
+[1] K Basnayake et al. ‘Extreme Narrow Escape: shortest paths for the first particles
+to escape through a small window’. In: arXiv 1804.10808 (2018). Preprint.
+[2] D Eisenberg and M Jucker. ‘The Amyloid State of Proteins in Human Diseases’. In: Cell 148.6 (2012), pp. 1188–1203.
+[3] D Holcman, N Hozé and Z Schuss. ‘Analysis and interpretation of superresolution single-particle trajectories’. In: Biophys. J. 109.11 (2015), pp. 1761–
+1771.
+[4] D Holcman et al. ‘Flow in the Endoplasmic Reticulum revealed by singleparticle trajectories’. Manuscript in preparation. 2018.
+[5] N Hozé and D Holcman. ‘Residence times of receptors in dendritic spines
+analyzed by stochastic simulations in empirical domains’. In: Biophys. J. 107.12
+(2014), pp. 3008–17.
+[6] N Hozé and D Holcman. ‘Statistical methods for large ensembles of superresolution stochastic single particle trajectories in cell biology’. In: Annual
+Review of Statistics and Its Application 4.1 (2017), pp. 189–223.
+[7] N Hozé et al. ‘Heterogeneity of receptor trafficking and molecular interactions revealed by superresolution analysis of live cell imaging’. In: PNAS 109.42
+(2012), pp. 17052–57.
+[8] S Manley et al. ‘High-density mapping of single-molecule trajectories with
+photoactivated localization microscopy’. In: Nature Methods 5.2 (2008), pp. 155–
+157.
+[9] Jonathon Nixon-Abell et al. ‘Increased spatiotemporal resolution reveals highly
+dynamic dense tubular matrices in the peripheral ER’. In: Science 354.6311
+(2016).
+[10] P Parutto and D Holcman. ‘Detection and interpretation of high density nanometer regions in super-resolution single particle trajectories’. Manuscript in
+preparation. 2018.
+[11] K Reynaud et al. ‘Why so many sperm cells?’ In: Communicative Integrative
+Biology 8.3 (2015).
+[12] Z Schuss. Theory and applications of stochastic processes: an analytical approach. New York: Springer, 2010.
+
+17
+
+[13] Z Schuss, K Basnayake and D Holcman. ‘Redundancy principle for optimal
+random search in biology’. In: bioRxiv (2017). Preprint.
+[14] Z Schuss, A Singer and D Holcman. ‘The narrow escape problem for diffusion
+in cellular microdomains’. In: PNAS 104.41 (2007), pp. 16098–16103.
+[15] Jean-Yves Tinevez et al. ‘TrackMate: An open and extensible platform for
+single-particle tracking’. In: Methods 115 (2017), pp. 80–90.
+[16] Alexandra Zidovska, David A. Weitz and Timothy J. Mitchison. ‘Micron-scale
+coherence in interphase chromatin dynamics’. In: PNAS (2013). ISSN: 00278424.
+
+18
+
+

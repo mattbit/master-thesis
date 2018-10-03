@@ -1,0 +1,10 @@
+\defaultfontfeatures[Meta Serif Pro]
+  {
+    Path = fonts/,
+    Extension = .otf,
+    UprightFont = MetaSerifPro-Book,
+    ItalicFont = MetaSerifPro-BookItalic,
+    BoldFont = MetaSerifPro-Bold,
+    BoldItalicFont = MetaSerifPro-BoldItalic,
+    SmallCapsFont = MetaSerifSC-Book
+  }

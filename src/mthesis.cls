@@ -13,7 +13,7 @@
 % OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 \ProvidesClass{mthesis}[2018/09/28 v1.7]
-\LoadClass[10pt,fleqn]{extbook}
+\LoadClass[11pt,fleqn]{extbook}
 
 % Packages
 \RequirePackage[draft]{fixme}
@@ -39,7 +39,12 @@
 
 \RequirePackage{fontspec}
 \setmainfont[Ligatures=TeX]{Meta Serif Pro}
-\setsansfont[Ligatures=TeX]{FF Meta Pro}
+\setsansfont[Ligatures=TeX]{Meta Pro}
+
+% Colors
+\definecolor{dark}{rgb}{0.13, 0.13, 0.13}
+\definecolor{medium}{rgb}{0.23, 0.27, 0.29}
+\definecolor{light}{rgb}{0.23, 0.27, 0.29}
 
 % Page layout
 \geometry{
@@ -47,10 +52,10 @@
   paperheight=297mm,
   twoside,
   inner=21mm,
-  outer=42mm,
-  marginpar=42mm,
-  headsep=1em,
-  marginparsep=1em,
+  width=140mm,
+  headsep=14mm,
+  marginparsep=7mm,
+  marginparwidth=35mm,
 }
 
 % Header/Footer
@@ -487,3 +492,10 @@
 % \newcommand{\Wlg}{Without loss of generality\xspace}
 %
 % \endinput
+
+
+% Figures
+
+\RequirePackage[font={color=medium,sf,small}]{caption}
+\DeclareCaptionLabelFormat{bold}{\textbf{(#2)}}
+\captionsetup[figure]{labelfont={bf},labelsep=quad,justification=raggedright,singlelinecheck=false}

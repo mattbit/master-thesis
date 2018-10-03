@@ -1,0 +1,9 @@
+\defaultfontfeatures[Meta Pro]
+  {
+    Path = fonts/,
+    Extension = .otf,
+    UprightFont = MetaPro-Normal,
+    ItalicFont = MetaPro-NormalItalic,
+    BoldFont = MetaPro-Bold,
+    BoldItalicFont = MetaPro-BoldItalic,
+  }

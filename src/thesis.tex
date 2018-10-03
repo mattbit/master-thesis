@@ -4,6 +4,8 @@
 \usepackage[british]{babel}
 \usepackage{import}
 \usepackage[page,title]{appendix}
+\usepackage{multicol}
+\usepackage{cleveref}
 
 \usepackage{csquotes}
 \usepackage[backend=bibtex,style=numeric]{biblatex}
@@ -12,14 +14,64 @@
 \usepackage{graphicx}
 \graphicspath{{img/}}
 
+\usepackage{sidenotes}
+
+
 % Title page
 \title{Analysis and modelling of biophysical processes\\from single-particle tracking data}
 \author{Matteo Dora}
+
+\renewcommand{\maketitle}{\begin{titlepage}
+  \newgeometry{
+    inner=21mm,
+    outer=21mm,
+    marginpar=42mm,
+  }
+  \begin{center}
+    {\huge\textbf{\textsc{\MakeLowercase{Politecnico di Torino}}}}
+
+    \vspace*{9em}
+
+    \large\textsc{master thesis}\\\textit{in Physics of Complex Systems}
+
+    \vspace{3em}
+
+    {\huge\textbf{Analysis \& modelling of biophysical processes\\from single-particle tracking data}}
+
+    \vspace{3em}
+
+    \includegraphics[width=3cm]{img/logo.eps}
+  \end{center}
+  \vfill
+  \begin{multicols}{2}
+
+    \noindent\textbf{Mentors}
+    \vspace{1em}
+
+    \noindent Andrea Pagnani\\
+    \textit{Politecnico di Torino}
+
+    \vspace{0.5em}
+
+    \noindent David Holcman\\
+    \textit{École Normale Supérieure, Paris}
+
+    \columnbreak
+    \raggedleft
+
+    \textbf{Candidate}
+    \vspace{1em}
+
+    Matteo Dora
+  \end{multicols}
+  \restoregeometry
+\end{titlepage}}
 
 \hypersetup{pdftitle={Analysis and modelling of biophysical processes}}
 \hypersetup{pdfauthor={Matteo Dora}}
 
 \begin{document}
+\color{dark}
 
 \maketitle
 
