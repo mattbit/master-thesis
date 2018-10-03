@@ -16,29 +16,30 @@
 \LoadClass[10pt,fleqn]{extbook}
 
 % Packages
-\RequirePackage{fixme}
+\RequirePackage[draft]{fixme}
 \RequirePackage{geometry}
 
 \RequirePackage[clearempty,pagestyles,newlinetospace]{titlesec}
 \RequirePackage{titletoc}
-\RequirePackage[fleqn]{mathtools}
-\RequirePackage{enumitem}
-\RequirePackage{textcase}
-\RequirePackage{setspace}
-\RequirePackage{xspace}
+% \RequirePackage[fleqn]{mathtools}
+% \RequirePackage{enumitem}
+% \RequirePackage{textcase}
+% \RequirePackage{setspace}
+% \RequirePackage{xspace}
 \RequirePackage{xcolor}
-\RequirePackage{array}
-\RequirePackage{multirow}
-% \RequirePackage{booktabs}
-\RequirePackage{merriweather}
-\RequirePackage[eqno]{tabfigures}
-\RequirePackage{index}
+% \RequirePackage{array}
+% \RequirePackage{multirow}
+% \RequirePackage[eqno]{tabfigures}
+% \RequirePackage{index}
 \RequirePackage[pdfstartview={FitH},pdfborder={0 0 0},hyperindex=false]{hyperref}
 \RequirePackage{graphicx}
 \RequirePackage{caption}
-\RequirePackage{floatrow}
-\RequirePackage{cleveref}
+% \RequirePackage{floatrow}
 \RequirePackage[final]{microtype}
+
+\RequirePackage{fontspec}
+\setmainfont[Ligatures=TeX]{Meta Serif Pro}
+\setsansfont[Ligatures=TeX]{FF Meta Pro}
 
 % Page layout
 \geometry{
@@ -69,8 +70,6 @@
 \pagestyle{main}
 
 % Sectioning
-
-\providecommand{\figureversion}[1]{}
 
 \setcounter{secnumdepth}{1}
 
@@ -116,6 +115,10 @@
    \fontseries{bx}%
    \fontsize{24}{24}\selectfont}
 \titlespacing*{\chapter}{0pt}{*7}{*9}
+
+% Type
+
+\newcommand{\tsc}[1]{\textsc{\MakeLowercase{#1}}}
 
 % % Floats
 %
