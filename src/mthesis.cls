@@ -36,10 +36,12 @@
 \RequirePackage{caption}
 % \RequirePackage{floatrow}
 \RequirePackage[final]{microtype}
+\RequirePackage{sidenotes}
 
 \RequirePackage{fontspec}
 \setmainfont[Ligatures=TeX]{Meta Serif Pro}
 \setsansfont[Ligatures=TeX]{Meta Pro}
+\newfontfamily{\chapterfamily}{Meta Serif Pro Extra Bold}
 
 % Colors
 \definecolor{dark}{rgb}{0.13, 0.13, 0.13}
@@ -51,31 +53,33 @@
   paperwidth=210mm,
   paperheight=297mm,
   twoside,
-  inner=21mm,
+  inner=14mm,
   width=140mm,
   headsep=14mm,
-  marginparsep=7mm,
-  marginparwidth=35mm,
+  marginparsep=4mm,
+  marginparwidth=42mm,
+  bottom=28mm
 }
+
+% Sidenotes
 
 % Header/Footer
 \newpagestyle{main}{
-  \sethead[\small\itshape\ifthechapter{\thechapter\enspace}{}\chaptertitle][][]%
-    {}{}{\small\itshape\ifthesection{\thesection\enspace}{}\sectiontitle}
+  \sethead[\small\sffamily\ifthechapter{\thechapter\enspace}{}\chaptertitle][][]%
+    {}{}{\small\sffamily\ifthesection{\thesection\enspace}{}\sectiontitle}
   \setfoot*{}{}{\thepage}
 }
-\newpagestyle{nosub}{
-  \sethead[\small\itshape\ifthechapter{\thechapter\enspace}{}\chaptertitle][][]%
-    {}{}{\small\itshape\ifthechapter{\thechapter\enspace}{}\chaptertitle}
-  \setfoot*{}{}{\thepage}
-}
+% \newpagestyle{nosub}{
+%   \sethead[\small\uppercase\sffamily\ifthechapter{\thechapter\enspace}{}\chaptertitle][][]%
+%     {}{}{\small\sffamily\ifthechapter{\thechapter\enspace}{}\chaptertitle}
+%   \setfoot*{}{}{\thepage}
+% }
 \renewpagestyle{plain}{
   \setfoot*{}{}{\thepage}
 }
 \pagestyle{main}
 
 % Sectioning
-
 \setcounter{secnumdepth}{1}
 
 \newcommand{\periodafter}[1]{#1.}
@@ -85,12 +89,12 @@
 \titleformat{\subsubsection}[runin]{\normalfont\itshape}{\thesubsubsection}%
   {.5em}{\periodafter}
 
-\definecolor{chaptergrey}{rgb}{0.7,0.7,0.7}
+% \definecolor{chaptergrey}{rgb}{0.7,0.7,0.7}
+\definecolor{chaptergrey}{rgb}{0.57, 0.64, 0.69}
 
 \titleformat{name=\chapter}[display]%
   {\normalfont\hfuzz=\maxdimen}%
   {\color{chaptergrey}%
-   %\ifodd\thepage\raggedleft\else\raggedright\fi%
    \raggedleft%
    \fontseries{bx}%
    \fontsize{96}{96}\selectfont%
@@ -108,7 +112,7 @@
   {-1.5pc}%
   {%\ifodd\thepage\raggedleft\else\raggedright\fi%
    \raggedleft%
-   \fontseries{bx}%
+   \chapterfamily\fontshape{it}%
    \fontsize{24}{24}\selectfont}%
   [\addtocontents{loa}{\protect\addvspace{10pt}}]
 \titleformat{name=\chapter,numberless}[display]%
@@ -122,8 +126,10 @@
 \titlespacing*{\chapter}{0pt}{*7}{*9}
 
 % Type
-
 \newcommand{\tsc}[1]{\textsc{\MakeLowercase{#1}}}
+
+% Bibliography
+\newcommand{\cit}[1]{\footcite{#1}}
 
 % % Floats
 %
@@ -496,6 +502,24 @@
 
 % Figures
 
-\RequirePackage[font={color=medium,sf,small}]{caption}
-\DeclareCaptionLabelFormat{bold}{\textbf{(#2)}}
-\captionsetup[figure]{labelfont={bf},labelsep=quad,justification=raggedright,singlelinecheck=false}
+\RequirePackage{changepage}
+
+\newcommand{\rightjustified}{% right-to-left paragraph alignment
+  \leftskip=0pt plus .5fil%
+  \rightskip=0pt plus -.5fil%
+  \parfillskip=0pt plus .5fil%
+}
+\DeclareCaptionJustification{rectoverso}{%
+  \checkoddpage
+  \ifevenpage \rightjustified \fi
+}
+\DeclareCaptionStyle{sidecaption}{font={color=medium,sf,small},labelfont=bf,labelsep=quad,singlelinecheck=false}
+
+
+% Foot note
+\renewcommand{\footnote}[1]{\sidenote{\color{medium}\footnotesize\sffamily#1}}
+
+% %footnotemark to sans serif
+% \long\def\@makefnmark{%
+%     \hbox {\@textsuperscript {\sffamily\@thefnmark}}
+%     }

@@ -1,0 +1,7 @@
+\defaultfontfeatures[Meta Serif Pro Extra Bold]
+  {
+    Path = fonts/,
+    Extension = .otf,
+    UprightFont = {FF Meta Serif Pro Extra Bold},
+    ItalicFont = {FF Meta Serif Pro Extra Bold Italic},
+  }
