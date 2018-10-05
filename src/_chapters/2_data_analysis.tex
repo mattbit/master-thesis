@@ -1,6 +1,6 @@
 % !TEX root = ../thesis.tex
 
-\chapter{Data analysis}\label{sec:data_analysis}
+\chapter{Data analysis for \tsc{SPT}}\label{sec:data_analysis}
 
 
 The modern imaging methods introduced in chapter \ref{sec:introduction} have made possible to track simultaneously multiple particles at high spatiotemporal resolution. Single-particle tracking can then be used to reconstruct thousands of particle trajectories. To extract meaningful insights from this huge amount of data, we need a modelling and statistical framework.
@@ -23,30 +23,15 @@ However, it is not possible to directly recover the microscopic model from the \
 \end{equation}
 where $\bm{a}(\bm{x})$ is the effective velocity field and $\bm{D} \equiv \bm{B}^T\bm{B}$ is the effective diffusion tensor. It must be noted that, in principle, the effective diffusion coefficient may not be isotropic since it takes into account the local microscopic features (e.g. obstacles). On the other hand, actual analysis of the data show that anisotropic components are negligible: in the following, the diffusion tensor is reduced for simplicity to a scalar coefficient by averaging on the diagonal entries. Moreover, the velocity field is assumed time invariant in the relatively short time window spanned by the \tsc{spt} data (30--60 s).
 
-% \begin{figure}
-% 	\begin{subfigure}[l]{5.33cm}
-% 		\caption{}\label{fig:velocity_smoothening_original}
-% 		\includegraphics{spt/velocity_field_original.pdf}
-% 	\end{subfigure}
-% 	\begin{subfigure}[l]{5.33cm}
-% 		\caption{}\label{fig:velocity_smoothening_smooth}
-% 		\includegraphics{spt/velocity_field_smooth.pdf}
-% 	\end{subfigure}
-% 	\begin{subfigure}[l]{5.1cm}
-% 		\caption{}\label{fig:cdr}
-% 		\includegraphics{spt/velocity_field_regions.pdf}
-% 	\end{subfigure}
-% 	\begin{subfigure}[l]{0cm}
-% 	    \vspace{\baselineskip}
-% 		\includegraphics{spt/velocity_field_colorbar.pdf}
-% 	\end{subfigure}
-%    	\captionsetup{width=\widewidth}
-% 	\caption{
-% 		Velocity field smoothening on a grid of size \SI{250}{nm}. \textbf{\subref{fig:velocity_smoothening_original}} original velocity field, \textbf{\subref{fig:velocity_smoothening_smooth}} velocity field after the smoothening,
-% 		\textbf{\subref{fig:cdr}} Regions of coherent motion on a grid of size \SI{500}{nm}. The angular distance threshold was set to \SI{0.08}{} and clusters smaller than 10 bins were discarded. The area color indicates the mean angle of the velocity among the cluster.
-% 	}
-% 	\label{fig:velocity_smoothening}
-% \end{figure}
+\begin{figure}
+    \begin{adjustwidth*}{}{-46mm}
+      \includegraphics[width=186mm]{spt/2_field.eps}%
+      {{\phantomsubcaption{}\label{fig:vf_original}}%
+      {\phantomsubcaption{}\label{fig:vf_smooth}}%
+      {\phantomsubcaption{}\label{fig:vf_cdr}}}%
+      \caption{Velocity field obtained from the \tsc{SPT} data using bins of size \SI{250}{\nano\metre}. \subref{fig:vf_original}\enspace original velocity field, \subref{fig:vf_smooth}\enspace velocity field after smoothening. \subref{fig:vf_cdr}\enspace regions of coherent motion obtained by clustering the smoothened velocity field. The angular distance threshold was set to \SI{0.08}{} and clusters smaller than 10 bins were discarded. The area color indicates the mean angle of the velocity among the cluster.\label{fig:vf}}
+  \end{adjustwidth*}
+\end{figure}
 
 
 \subsection{Diffusion and velocity field estimation}
@@ -83,7 +68,7 @@ Explicitly, representing bins with their grid site indices, the kernel matrix $K
   n_{i+1,j-1} & n_{i+1, j} & n_{i+1, j+1}
  \end{bmatrix}
 \end{equation}
-Finally, bins such that the total number of samples in their Moore neighbourhood is lower than a threshold are excluded from the analysis. A comparison between the velocity field before and after the smoothening is visible in \cref{fig:velocity_smoothening_original,fig:velocity_smoothening_smooth}.
+Finally, bins such that the total number of samples in their Moore neighbourhood is lower than a threshold are excluded from the analysis. A comparison between the velocity field before and after the smoothening is visible in \cref{fig:vf_original,fig:vf_smooth}.
 
 This approach can be interpreted in terms of Bayesian inference, where the prior (Gaussian) distribution of the parameter of interest is based on the distributions in the neighbouring bins. The mean estimator on the posterior is then obtained by averaging the means of the neighbours with a weight proportional to the number of samples.
 
@@ -203,12 +188,17 @@ A parabolic error score $S$ indicating how much the potential well resembles a p
 where $S \in [0, 1]$ and $S = 0$ indicates a perfect fit.
 The initial high density regions are localized by using the \tsc{dbscan} clustering algorithm.
 
+\begin{marginfigure}
+  \includegraphics{spt/2_potential_well.eps}
+  \caption{Example of a potential well in the velocity field obtained from the \tsc{SPT} data.}\label{fig:well}
+\end{marginfigure}
 
-\section{Pathways}\label{sec:pathways}
 
-We call \emph{pathways} the regions in the cell space where amyloid beta particles follow a coherently directed motion. The study of this kind of regions is not new in the literature and can find relevant applications in many biological contexts. As an example, coherent motion regions have been observed in interphase chromatin \cit{zidovska2013}, yielding new hypothesis about chromatin biological functions. In our case, we would like to find out if Aβ is transported along well defined routes.
+\section{Regions of coherent motion}\label{sec:pathways}
 
-We identified pathways by clustering adjacent bins based on the angular distance of their  velocity vectors. The angular distance between two vectors $\bm{u}$ and $\bm{v}$ is defined as:
+We now study regions in the cell space where amyloid beta particles follow a coherently directed motion. The study of this kind of regions is not new in the literature and can find relevant applications in many biological contexts. As an example, coherent motion regions have been observed in interphase chromatin \cit{zidovska2013}, yielding new hypothesis about chromatin biological functions. In our case, we would like to find out if Aβ is transported along well defined pathways.
+
+We identified regions of coherent motion by clustering adjacent bins based on the angular distance of their  velocity vectors. The angular distance between two vectors $\bm{u}$ and $\bm{v}$ is defined as:
 \begin{equation} \label{eq:angular-similarity}
  \mathrm{distance}(\bm{u}, \bm{v}) \equiv \frac{1}{\pi} \arccos\left(\frac{\bm{u} \cdot \bm{v}}{\|\bm{u}\| \|\bm{v}\|}\right)
 \end{equation}
@@ -223,7 +213,7 @@ We identified pathways by clustering adjacent bins based on the angular distance
 \end{item}
 \end{enumerate}
 
-\noindent This extremely simple method is quite effective in localising coherently directed motion. An example of the result is shown in \cref{fig:cdr}.
+\noindent This extremely simple method is quite effective in localising coherently directed motion. An example of the result is shown in \cref{fig:vf_cdr}.
 
 
 \section{The full picture}\label{sec:full_picture}
@@ -234,28 +224,11 @@ First, the axis corresponding to the average direction of each region is compute
 
 Sadly, the results of this approach are a bit disappointing: the dynamical map that we were able to reconstruct by linking attractors and pathways is very complex and apparently meaningless.
 
-% \begin{figure}
-% 	\begin{wide}
-% 	\begin{minipage}[t]{10.67cm}
-% 	    \begin{subfigure}[t]{5.33cm}
-% 	      \caption{}\label{fig:graph_regions}
-% 	      \includegraphics{img/spt/fig/06_graph_regions.png}
-% 	    \end{subfigure}
-% 	    \begin{subfigure}[t]{5.33cm}
-% 	      \caption{}\label{fig:graph_skeleton}
-% 	      \includegraphics{img/spt/fig/06_graph_sk.png}
-% 	    \end{subfigure}
-% 	\end{minipage}
-% 	\begin{minipage}[t]{5.3cm}
-% 	    \vspace{\baselineskip}
-% 		\caption{
-% 		    Reconstruction of dynamical structure.
-% 		    \textbf{\subref{fig:graph_regions}} coherent motion regions with main axis highlighted;
-% 		    \textbf{\subref{fig:graph_skeleton}} graph reconstructed by linking potential wells and regions of coherent motion.
-% 		  }
-% 		  \label{fig:graph}
-% 	\end{minipage}
-% \end{wide}
-% \end{figure}
+\begin{figure}
+  \sidecaption{Reconstruction of the dynamical structure. \subref{fig:graph_regions}\enspace coherent motion regions with main axis highlighted and attractors (in red), \subref{fig:graph_network}\enspace motion graph reconstructed by linking the regions of coherent motion and attractors.\label{fig:graph}}
+  \includegraphics[width=\textwidth]{spt/graph.eps}
+  {\phantomsubcaption{}\label{fig:graph_regions}}
+  {\phantomsubcaption{}\label{fig:graph_network}}
+\end{figure}
 
-Although the methods to localise attractors and pathways described in sections \ref{sec:attractors} and \ref{sec:pathways} respectively were successful in their scope, the hope of identifying a global dynamics in the data seems vain. The analysis shows that there is no well defined pathway along which the Aβ aggregates are driven nor clear accumulation points. Instead, the molecules follow complex itineraries, bouncing between different regions. The reconstruction of the dynamical structure shown in \cref{fig:graph} gives an idea of the mess in the underlying motion. Yet, this leads to a new hypothesis. In fact, the behaviour may suggest that the processing of Aβ is highly delocalized, and molecules are bounced between several loosely distributed processing units. In the next chapter we will present a possible explanation for this behaviour, presenting a new model of motion and computing its characteristics.
+Although the methods to localise attractors and pathways described in \cref{sec:attractors,sec:pathways} were successful in their scope, the hope of identifying a global dynamics in the data seems vain. The analysis shows that there is no well defined pathway along which the Aβ aggregates are driven nor clear accumulation points. Instead, the molecules follow complex itineraries, bouncing between different regions. The reconstruction of the dynamical structure shown in \cref{fig:graph} gives an idea of the mess in the underlying motion. This leads us to formulate a new hypothesis. In fact, the behaviour may suggest that the processing of Aβ is highly delocalized, and molecules are bounced between several loosely distributed processing units. In the next chapter we will introduce a possible explanation for this behaviour, presenting a new model of motion and computing its characteristics.

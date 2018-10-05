@@ -502,6 +502,7 @@
 
 % Figures
 
+\RequirePackage{subcaption}
 \RequirePackage{changepage}
 
 \newcommand{\rightjustified}{% right-to-left paragraph alignment
@@ -513,7 +514,12 @@
   \checkoddpage
   \ifevenpage \rightjustified \fi
 }
-\DeclareCaptionStyle{sidecaption}{font={color=medium,sf,small},labelfont=bf,labelsep=quad,singlelinecheck=false}
+\DeclareCaptionStyle{sidecaption}{font={color=medium,sf,small},labelfont=bf,labelsep=space,singlelinecheck=false}
+\DeclareCaptionStyle{marginfigure}{font={color=medium,sf,small},labelfont=bf,labelsep=quad,singlelinecheck=false}
+
+\DeclareCaptionLabelFormat{subref}{\tsc{\textbf{#2}}}
+
+\captionsetup{font={color=medium,sf,small},labelfont=bf,labelsep=quad,subrefformat=subref,singlelinecheck=false,skip=4mm}
 
 
 % Foot note
