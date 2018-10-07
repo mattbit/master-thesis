@@ -35,13 +35,26 @@
 \RequirePackage{graphicx}
 \RequirePackage{caption}
 % \RequirePackage{floatrow}
-\RequirePackage[final]{microtype}
 \RequirePackage{sidenotes}
 
-\RequirePackage{fontspec}
+% Typography
+\RequirePackage[final]{microtype}
+
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{bm}
+
+\RequirePackage{mathspec}
+
 \setmainfont[Ligatures=TeX]{Meta Serif Pro}
 \setsansfont[Ligatures=TeX]{Meta Pro}
 \newfontfamily{\chapterfamily}{Meta Serif Pro Extra Bold}
+
+\setmathsfont(Digits,Latin,Greek)[Numbers={Lining,Proportional}]{Meta Serif Pro}
+
+% Tables
+\renewcommand{\arraystretch}{1.5}
+
 
 % Colors
 \definecolor{dark}{rgb}{0.13, 0.13, 0.13}
@@ -516,6 +529,7 @@
 }
 \DeclareCaptionStyle{sidecaption}{font={color=medium,sf,small},labelfont=bf,labelsep=space,singlelinecheck=false}
 \DeclareCaptionStyle{marginfigure}{font={color=medium,sf,small},labelfont=bf,labelsep=quad,singlelinecheck=false}
+\DeclareCaptionStyle{margintable}{font={color=medium,sf,small},labelfont=bf,labelsep=quad,singlelinecheck=false}
 
 \DeclareCaptionLabelFormat{subref}{\tsc{\textbf{#2}}}
 

@@ -18,7 +18,7 @@ As of today, causes of the Alzheimer’s are not fully understood by the scienti
 \subsection{The amyloid hypothesis}
 
 \begin{figure}
-  \sidecaption[][0pt]{\tolerance=20 Illustration representing Aβ placques inside the brain (shown as brown spherical aggregates between neurons). \emph{Image courtesy of the National Institute on Aging/NIH.}}\label{fig:plaques}
+  \sidecaption{\tolerance=20 Illustration representing Aβ placques inside the brain (shown as brown spherical aggregates between neurons). \emph{Image courtesy of the National Institute on Aging/NIH.}\label{fig:plaques}}
   \includegraphics[width=\textwidth]{nia_plaques.jpg}
 \end{figure}
 
@@ -26,13 +26,13 @@ A long standing attempt to explain Alzheimer’s disease is the \emph{amyloid hy
 These clumps, known as \emph{plaques}, are thought to start a cascade process leading to brain inflammation, cells deaths and synapses dysfunction. Despite solid evidence proving the association between Alzheimer's disease and Aβ plaques, the amyloid hypothesis didn't lead to any beneficial result in terms of medical therapy. Various treatments targeting Aβ aggregates have been trialled but, even if successful in dissolving plaques, no effect on patients' cognitive functions has been observed. The general explanation of these disappointing results is that treatments are administered too late in the disease progression, when plaques have already activated an uncontrollable cascade of damaging processes. Supporting this idea, it has been shown that formation of Aβ plaques can begin decades before the manifestation of symptoms. Despite being often criticised for its failures, the amyloid theory remains one of the main directions in Alzheimer's disease research.
 
 
-\section{super resolution microscopy and single-particle tracking}
+\section{Super resolution microscopy and single-particle tracking}
 
 We will look at Alzheimer's disease from a very small scale, studying the motion of amyloyd-β inside neural cells. Observing these kind of biological samples at molecular scale requires a very high resolution. In particular, one has to capture details beyond the light diffraction limit. The ensemble of techniques that allow to overcome this limit is known as \emph{super resolution microscopy}. In the context of wide-field flourescence imaging, two main strategies exist to achieve super resolution. The first and more traditional one is using patterned light illumination techniques such as \emph{structured imaging microscopy} (\tsc{SIM}) \cit{sim1995}. \tsc{sim} relies on Moiré patterns created by illuminating the sample through different gratings. The patterns can then be analysed in reciprocal space to reconstruct the high resolution image. The second strategy is more recent and consists in localisation based methods such as \emph{photo-activated localization microscopy} (\tsc{PALM}) \cit{palm2006,palm2008} and \emph{stochastic optical reconstruction microscopy} (\tsc{STORM}) \cit{storm2006}. Both \tsc{palm} and \tsc{storm} work by selectively activating subsets of fluorophores to avoid diffraction effects between closely spaced samples. This is obtained through \emph{photobleaching} (the spontaneous fading of the flourophore) in \tsc{PAML} and by \emph{photoswitching} (the controlled switching between on/off states) in \tsc{STORM}.
 
 All these techniques have undergone a remarkable development in recent years, making it possible to capture super resolution images at small time intervals (in the order of tens of milliseconds). These recordings allow to observe the motion of single molecules in cells at nanometer scale. In practice, one can reconstruct the molecules trajectories by linking their position observed in consecutive frames. Several tools and techniques have been designed to perform this operation \cit{saxton2008}, that goes under the name of \emph{single-particle tracking} (\tsc{SPT}). The advantage of \tsc{SPT} data with respect to other methods is that it measures individual molecule dynamics (and not just ensemble averages). Although the method is limited by the imaging time resolution, it allows to perform a much fine-grained analysis than other ensemble-based techniques.
 
 \begin{figure}
-  \sidecaption{A frame taken from a fast \tsc{SIM} recording. Bright spots are amyloid beta aggregates moving inside a cell. The trajectory of one of them (circled in red) obtained by \tsc{SPT} is shown in green.}\label{fig:tracking}
+  \sidecaption{A frame taken from a fast \tsc{SIM} recording. Bright spots are amyloid beta aggregates moving inside a cell. The trajectory of one of them (circled in red) obtained by \tsc{SPT} is shown in green.\label{fig:tracking}}
   \includegraphics[width=\textwidth,height=6.5cm]{tracking.png}
 \end{figure}
