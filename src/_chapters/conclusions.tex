@@ -1,3 +1,22 @@
+% !TEX root = ../thesis.tex
+
 \chapter{Conclusions}
-\section{Summary and open problems}
-\section{Perspective}
+
+\section{Perspective and open problems}
+
+By means of statistical methods and modelling, in section \ref{sec:data_analysis}, we have tackled the Alzheimer's disease from the molecular point of view, building a structured representation of the amyloid-β dynamics starting from single-particle tracking data.
+Unfortunately, the structure that this analysis has revealed is not of immediate nor simple interpretation.
+Regions of coherent motion and attractors form a complex framework, suggesting that amyloid-β aggregates are processed by a delocalised system.
+New results for the dynamics of the endoplasmic reticulum\cit{holcman2018single}, also based on \tsc{spt} analysis, provided hints that this delocalised system may be represented by the \tsc{ER}.
+These findings were exploited to build a model of motion on the \tsc{er} and, thanks to that, we have been able to provide an estimate for the timescale of the \tsc{ER} transport mechanism through numerical simulations.
+However, values for the mean first passage time between nodes of the network found in the simulations are unexpectedly high (in the order of tens of minutes), hinting at the fact that \tsc{MFPT} may not be the right parameter to consider when evaluating the redistribution timescale. Efficient transport in the context of biological processes should probably exploit other means.
+
+Speculating, we propose that we should look at extreme statistics for the arrival time to highlight the characteristics of the transport mechanism.
+Considering an activation process where multiple particles are released from a source but few (or even just one) are sufficient to enable receptors, we focused on the time required for the first particle to arrive in a target node and found a much shorter timescale (in the order of seconds), that seems compatible with the class of biological processes we want to describe.
+Here we also reviewed previous results dealing with an equivalent Brownian process \cit{basnayake2017,basnayake2018,holcman2018asymptotics}, confirming that the asymptotics for the first arrival time obtained in continuous space also hold in the case of motion on a network; we also found new evidence showing that fastest trajectories follow the spatially optimal path.
+On this last topic, % WIP WIP WIP
+Obviously
+L
+
+for an ensemble of particles were in agreement with previous results on Brownian processes \cite{basnayake2018,basnayake2017}, in particular showing that the trajectory of the first particle to arrive converges towards the shortest path. Connecting this last result to previous works \cite{reynaud2015, schuss2017}, we may speculate that this confirms the importance of redundancy in reaching optimality.
+However, these results only give clues and no definitive answer, as much work has still to be done. On one hand, the results of the numerical simulations have to be compared to actual experiments to check the validity of the model under different conditions. On the other, the coherence with the results from continuous Brownian motion suggests that an analytical—possibly asymptotic—treatment is possible and may lead to interesting conclusions. Lastly, a better understanding of the \tsc{er} transport mechanism may shed new light on the Abeta aggregation and its clinical implications.
