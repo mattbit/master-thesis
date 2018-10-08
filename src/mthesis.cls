@@ -145,7 +145,7 @@
 \newcommand{\tsc}[1]{\textsc{\MakeLowercase{#1}}}
 
 % Bibliography
-\newcommand{\cit}[1]{\footcite{#1}}
+% \newcommand{\mcite}[1]{\footcite{#1}}
 
 % % Floats
 %
@@ -320,7 +320,7 @@
 % % Bibliography
 %
 % \setcitestyle{aysep={}}
-% \newcommand\cites[2][]{\citep[see][#1]{#2}}
+% \newcommand\mcitees[2][]{\mciteep[see][#1]{#2}}
 % \setlength{\bibhang}{\diss@indent}
 %
 %
@@ -540,7 +540,7 @@
 
 
 % Foot note
-\renewcommand{\footnote}[1]{\sidenote{\color{medium}\footnotesize\sffamily#1}}
+% \renewcommand{\footnote}[1]{\sidenote{\color{medium}\footnotesize\sffamily#1}}
 
 % %footnotemark to sans serif
 % \long\def\@makefnmark{%

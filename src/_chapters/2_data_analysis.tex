@@ -7,17 +7,17 @@ The modern imaging methods introduced in chapter \ref{sec:introduction} have mad
 
 In this chapter we will present data analysis techniques to reconstruct the dynamics of amyloid-β aggregates. As explained in section \ref{sec:alzheimer}, the uncontrolled formation of Aβ plaques in the brain tissue is thought to be a cause of Alzheimer's disease. What we would like to understand is how cells react to an excessive concentration of Aβ. How do they try to dispose of this dangerous products? We hypothesise that the cell transports and actively treats Aβ molecules for disposal in a well defined system. We tried to reconstruct the motion of Aβ molecules inside the cell to realise which route they follow and how they are treated. That said, the statistical methods described in the following aim to provide a general framework to extract dynamical parameters of particles at cell scale.
 
-The data presented here was provided by the Molecular Neuroscience Group at the University of Cambridge, \tsc{UK}. It consists into trajectory fragments of Aβ-42 aggregates artificially injected in \tsc{HEK 293T} cells and captured via fast \tsc{SIM} (in 2d) at a frequency of \SI{8}{\hertz}. The trajectories were reconstructed from imaging data using the TrackMate software \cit{trackmate}.
+The data presented here was provided by the Molecular Neuroscience Group at the University of Cambridge, \tsc{UK}. It consists into trajectory fragments of Aβ-42 aggregates artificially injected in \tsc{HEK 293T} cells and captured via fast \tsc{SIM} (in 2d) at a frequency of \SI{8}{\hertz}. The trajectories were reconstructed from imaging data using the TrackMate software\mcite{trackmate}.
 
 \section{A statistical framework for tracking data}
 
-At the microscopic level, the motion of the molecules can be described by Langevin's equation. In the case of biological processes we are interested in, the Langevin dynamics can be considered in its large friction limit (Smoluchowski's equation) \cit{hoze2012, hoze2014}
+At the microscopic level, the motion of the molecules can be described by Langevin's equation. In the case of biological processes we are interested in, the Langevin dynamics can be considered in its large friction limit (Smoluchowski's equation)\mcite{hoze2012, hoze2014}
 \begin{equation} \label{eq:smoluchowski}
  \dot{\bm{x}} = \frac{\bm{F}(\bm{x})}{\gamma} + \sqrt{2D} \dot{\bm{w}}
 \end{equation}
 where $\bm{F}(\bm{x})$ is the drift force exerted on the particle at position $\bm{x}$, $\gamma$ is the friction coefficient, $D$ is the diffusion coefficient and $\bm{w}(t)$ is a two-dimensional Wiener process. At this scale, it makes sense to consider the diffusion to be mainly due to thermal agitation so that it can be considered isotropic.
 
-However, it is not possible to directly recover the microscopic model from the \tsc{spt} data, since we miss information about the local behaviour both in space (such as the presence of microscopic obstacles undetected by the imaging device) and time (such as thermal fluctuations much faster than the acquisition timescale). We can still build a coarse-grained model \cit{hoze2012, hoze2014}, transforming eq. \ref{eq:smoluchowski} into the effective stochastic equation
+However, it is not possible to directly recover the microscopic model from the \tsc{spt} data, since we miss information about the local behaviour both in space (such as the presence of microscopic obstacles undetected by the imaging device) and time (such as thermal fluctuations much faster than the acquisition timescale). We can still build a coarse-grained model\mcite{hoze2012, hoze2014}, transforming eq. \ref{eq:smoluchowski} into the effective stochastic equation
 \begin{equation} \label{eq:effective}
  \dot{\bm{x}} = \bm{a}(\bm{x}) + \sqrt{2}\bm{B} \dot{\bm{w}}
 \end{equation}
@@ -36,7 +36,7 @@ where $\bm{a}(\bm{x})$ is the effective velocity field and $\bm{D} \equiv \bm{B}
 
 \subsection{Diffusion and velocity field estimation}
 
-To estimate the dynamical parameters of eq. \ref{eq:effective} a statistical analysis is needed. We follow the approach demonstrated in \cit{hoze2012, hoze2014, hoze2017, holcman2015} by partitioning the data in a square grid with fixed bin size. The velocity field and diffusion coefficients are considered constant in each bin.
+To estimate the dynamical parameters of eq. \ref{eq:effective} a statistical analysis is needed. We follow the approach demonstrated in\mcite{hoze2012, hoze2014, hoze2017, holcman2015} by partitioning the data in a square grid with fixed bin size. The velocity field and diffusion coefficients are considered constant in each bin.
 If the acquisition time interval is sufficiently small, the process described by eq. \ref{eq:effective} can be discretized following a forward Euler scheme:
 \begin{equation}
  \bm{x}_{t+1} - \bm{x}_{t} = \bm{a}_{\Delta t}(\bm{x}_t) \Delta t + \sqrt{2\Delta t\bm{D}_{\Delta t}(\bm{x}_t)}  \bm{\eta}_t
@@ -160,7 +160,7 @@ This approach can be interpreted in terms of Bayesian inference, where the prior
 
 The first biophysical features that we want to identify are attracting regions. We would like to infer from the tracking data if there exist regions in the intracellular space where Aβ molecules are collected and, if so, we would like to characterise their dimension and attraction force. Note that in the microscopy images we are only able to see the fluorescent tags on the Aβ molecules and not the cell structure. Attracting regions may represent organelles where Aβ is collected for disposal. Being able to identify these regions may allow us to relate them to specific organelles (such as lysosomes) by looking at their distribution and time evolution.
 
-To identify local attractors we use the methodology and formalism developed in \cit{hoze2012, parutto_wells}. Considering the velocity field to be locally conservative, it can be described by the gradient of a scalar potential:
+To identify local attractors we use the methodology and formalism developed in\mcite{hoze2012, parutto_wells}. Considering the velocity field to be locally conservative, it can be described by the gradient of a scalar potential:
 \begin{equation}
  \bm{a}(\bm{x}) = - \nabla U(\bm{x})
 \end{equation}
@@ -196,7 +196,7 @@ The initial high density regions are localized by using the \tsc{dbscan} cluster
 
 \section{Regions of coherent motion}\label{sec:pathways}
 
-We now study regions in the cell space where amyloid beta particles follow a coherently directed motion. The study of this kind of regions is not new in the literature and can find relevant applications in many biological contexts. As an example, coherent motion regions have been observed in interphase chromatin \cit{zidovska2013}, yielding new hypothesis about chromatin biological functions. In our case, we would like to find out if Aβ is transported along well defined pathways.
+We now study regions in the cell space where amyloid beta particles follow a coherently directed motion. The study of this kind of regions is not new in the literature and can find relevant applications in many biological contexts. As an example, coherent motion regions have been observed in interphase chromatin\mcite{zidovska2013}, yielding new hypothesis about chromatin biological functions. In our case, we would like to find out if Aβ is transported along well defined pathways.
 
 We identified regions of coherent motion by clustering adjacent bins based on the angular distance of their  velocity vectors. The angular distance between two vectors $\bm{u}$ and $\bm{v}$ is defined as:
 \begin{equation} \label{eq:angular-similarity}

@@ -10,13 +10,21 @@
 \sisetup{detect-all,range-phrase={--},range-units=single}
 
 \usepackage{csquotes}
-\usepackage[backend=bibtex,style=authoryear-ibid]{biblatex}
+\usepackage[backend=bibtex,style=numeric]{biblatex}
 \addbibresource{_bibliography.bib}
 
 \usepackage{graphicx}
 \graphicspath{{img/}}
 
+\DeclareFieldFormat[article,book,unpublished,misc]{title}{\mkbibemph{#1}}
 
+\DeclareCiteCommand{\mcite}{}{%
+   \sidenote[\usebibmacro{cite}]{\color{medium}\footnotesize\sffamily\raggedright%
+   \setunit{\addnbspace}
+   \printnames{labelname}%
+   \setunit{\labelnamepunct}
+   \printfield{title} (\printfield{year})}%
+}{}{}
 
 % Title page
 \title{Analysis and modelling of biophysical processes\\from single-particle tracking data}
