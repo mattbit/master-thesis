@@ -93,7 +93,15 @@ where we neglected the time for diffusion $\tau_{node}$. We thus expect an incre
   \end{adjustwidth*}
 \end{figure}
 
-The value for the \tsc{MFPT} found in the simulations is surprising. On a graph with radius 40, a particle takes around \SI{1000}{\second} (on average) to arrive in a node that is just 10 steps away. This means a timescale of transport in the order of tens of minutes, or hours to reach the peripheral regions. While it is hard to say whether biological processes on the \tsc{ER} actually work at this slow timescale, we can speculate that since most of the cell functionings are faster the \tsc{MFPT} is not a sufficient parameter to charaterise them.
+The value for the \tsc{MFPT} found in the simulations is surprising. On a graph with radius 40, a particle takes around \SI{1000}{\second} (on average) to arrive in a node that is just 10 steps away. This means a timescale of transport in the order of tens of minutes, or hours to reach the peripheral regions. While it is hard to say whether biological processes on the \tsc{ER} actually work at this slow timescale, we can speculate that since most of the cell functionings are faster the \tsc{MFPT} is not a sufficient parameter to charaterise them. When we instead consider the time to arrive for the first particle among a group of N (\tsc{EFPT}), the timescale drops to the order of seconds even for a group of 100 particles. With N = 1000, the time for the first to reach a target located 10 steps away is just slighly more than \SI{1}{\second}. This seems a much more reasonable timescale for an efficient biological process. We speculate that this kind of extreme statistics must have an important role in biology, as already noted in \cit{reynaud2015,basnayake2017,basnayake2018}.
+
+An asymptotic formula for the \tsc{EFPT} has been described, for the continuous space, in \cite[p.~330]{holcman2018asymptotics}. The asymptotics in 2 dimensions reads:
+\begin{equation}
+  \tau^{ex}_{S \to T}(N) \sim \frac{\delta^2}{D_{eff} \log N},\quad N \gg 1
+\end{equation}
+where $\delta$ is the distance between S and T, $D_{eff}$ is an effective diffusion coefficient, and $N$ is the total number of particles. Using the graph distance $\delta = d(S, T)$, we can fit this behaviour to the results of the simulations on the active graph. As shown in \cref{fig:ex_efpt}, the simulations match very well the asymptotic behaviour in the bulk of the graph, confirming the validity of the analytical results.
+
+Finally, the simulations show that fastest trajectories follow the optimal path on the graph. This may seem naive, but one has to consider that in principle the first particle to arrive may be the one that goes faster through a longer trajectory (for example, avoiding trapping nodes). In our case, that would mean a deviation from the exponential distribution of waiting times in nodes. Simulations results prove that, while this deviation exists when considering the fastest particles for large value of N ($\sim 10^4$), it is in general negligible with respect to the optimisation of the trajectory path. Indeed, fastest trajectory tend to follow (spatially) optimal paths (see \cref{fig:ex_traj}). This confirms previous results obtained for Brownian motion in 2 dimensions\cit{basnayake2018}.
 
 \begin{figure}
   \begin{adjustwidth*}{}{-46mm}
@@ -101,11 +109,12 @@ The value for the \tsc{MFPT} found in the simulations is surprising. On a graph 
     {{\phantomsubcaption{}\label{fig:ex_efpt}}%
     {\phantomsubcaption{}\label{fig:ex_traj}}%
     {\phantomsubcaption{}\label{fig:ex_packet}}}%
-    \caption{Timescales in the active network.
-    \subref{fig:ex_efpt}\enspace \tsc{EFPT} on the hexagonal network, \subref{fig:ex_traj}\enspace characteristics of the trajectories by order of arrival.
-    \subref{fig:ex_packet}\enspace emergence motion in packets for slow switching.\label{fig:ex}}
-
+    \caption{Extremes statistics and packet motion.
+    \subref{fig:ex_efpt}\enspace \tsc{EFPT} (time for the first to arrive( on the hexagonal network for different values of N (total number of particles). The dashed line shows the fit for $c_1 \frac{\delta^2}{c_2 + \log N}$ with $c_1 = 0.07$ and $c_2 = -2.39$. \subref{fig:ex_traj}\enspace characteristics of the trajectories by order of arrival (1000 out of 10⁴ trajectories are considered). The plot shows how the trajectory length has a greater impact on the time to arrive than a deviation from the mean time per step.
+    \subref{fig:ex_packet}\enspace number of particles in a target node T as a function of time. The area plot is coloured based on the edge particles are coming from. For small values of $\tau_{switch}$, an uniform equilibrium distribution is reached after large enough time (figs. C1--2). Instead, for slow switching, a new kind of motion emerges. Particles arrive in the node in lumps (\emph{packets}), at random times (fig. C3).\label{fig:ex}}
   \end{adjustwidth*}
 \end{figure}
 
 \section{Packet motion}
+
+In a standard random walk on a graph, the probability of finding the walker in a given node at equilibrium tends to an uniform distribution \cit{lovasz1993random}. This means that if we release a group of particles from a source, given a sufficiently long time, they will distribute evenly on the network with a timescale proportional to the largest eigenvalue of the stochastic matrix representing the transition probabilities between nodes. What happens instead on the active network model? When considering a fast edge switching rate ($\tau_{switch}$ = \SIrange{30}{300}{\milli\second}), the equilibrium behaviour is preserved, leading to a roughly constant number of particles per node (figs. \ref{fig:ex_packet}1--2). For a slow switching timescale instead ($\tau_{switch} = \SI{3}{\second}$), a novel mechanism of transport emerges. Particles group in lumps, synchronising their motion and arriving in nodes in \emph{packets} (see \cref{fig:ex_packet}3). These packets are not stable: they are continuously formed (and unpacked) by splitting and merging of different particles or smaller packets. This behaviour undermine the realisation of a even distribution, as the edge switching keeps the system out of equilibrium. This mechanism allows for a delivery in redundant groups, which seems to guarantee more robustness to a biological transport process.

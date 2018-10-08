@@ -52,6 +52,8 @@
 
 \setmathsfont(Digits,Latin,Greek)[Numbers={Lining,Proportional}]{Meta Serif Pro}
 
+
+
 % Tables
 \renewcommand{\arraystretch}{1.5}
 
@@ -97,8 +99,9 @@
 
 \newcommand{\periodafter}[1]{#1.}
 
-\titleformat{\section}[hang]{\normalfont\Large}{\thesection}{.5em}{}
-\titleformat{\subsection}[hang]{\normalfont\itshape}{\thesubsection}{.5em}{}
+\titleformat{\section}[hang]{\sffamily\bfseries\Large}{\thesection}{.5em}{}
+% \titlespacing{\section}{0pt}{2.5em}{1.5em}
+\titleformat{\subsection}[hang]{\sffamily\bfseries}{\thesubsection}{.5em}{}
 \titleformat{\subsubsection}[runin]{\normalfont\itshape}{\thesubsubsection}%
   {.5em}{\periodafter}
 
