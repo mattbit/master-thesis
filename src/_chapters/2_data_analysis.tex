@@ -17,7 +17,7 @@ At the microscopic level, the motion of the molecules can be described by Langev
 \end{equation}
 where $\bm{F}(\bm{x})$ is the drift force exerted on the particle at position $\bm{x}$, $\gamma$ is the friction coefficient, $D$ is the diffusion coefficient and $\bm{w}(t)$ is a two-dimensional Wiener process. At this scale, it makes sense to consider the diffusion to be mainly due to thermal agitation so that it can be considered isotropic.
 
-However, it is not possible to directly recover the microscopic model from the \tsc{spt} data, since we miss information about the local behaviour both in space (such as the presence of microscopic obstacles undetected by the imaging device) and time (such as thermal fluctuations much faster than the acquisition timescale). We can still build a coarse-grained model\mcite{hoze2012, hoze2014}, transforming eq. \ref{eq:smoluchowski} into the effective stochastic equation
+However, it is not possible to directly recover the microscopic model from the \tsc{spt} data, since we miss information about the local behaviour both in space (such as the presence of microscopic obstacles undetected by the imaging device) and time (such as thermal fluctuations much faster than the acquisition timescale)\mcite{hoze2017, holcman2015}. We can still build a coarse-grained model\mcite{hoze2012, hoze2014}, transforming eq. \ref{eq:smoluchowski} into the effective stochastic equation
 \begin{equation} \label{eq:effective}
  \dot{\bm{x}} = \bm{a}(\bm{x}) + \sqrt{2}\bm{B} \dot{\bm{w}}
 \end{equation}
@@ -36,7 +36,7 @@ where $\bm{a}(\bm{x})$ is the effective velocity field and $\bm{D} \equiv \bm{B}
 
 \subsection{Diffusion and velocity field estimation}
 
-To estimate the dynamical parameters of eq. \ref{eq:effective} a statistical analysis is needed. We follow the approach demonstrated in\mcite{hoze2012, hoze2014, hoze2017, holcman2015} by partitioning the data in a square grid with fixed bin size. The velocity field and diffusion coefficients are considered constant in each bin.
+To estimate the dynamical parameters of eq. \ref{eq:effective} a statistical analysis is needed. We follow the approach demonstrated in \cite{hoze2012, hoze2014, hoze2017, holcman2015} by partitioning the data in a square grid with fixed bin size. The velocity field and diffusion coefficients are considered constant in each bin.
 If the acquisition time interval is sufficiently small, the process described by eq. \ref{eq:effective} can be discretized following a forward Euler scheme:
 \begin{equation}
  \bm{x}_{t+1} - \bm{x}_{t} = \bm{a}_{\Delta t}(\bm{x}_t) \Delta t + \sqrt{2\Delta t\bm{D}_{\Delta t}(\bm{x}_t)}  \bm{\eta}_t
