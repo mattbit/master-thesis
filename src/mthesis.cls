@@ -36,6 +36,7 @@
 \RequirePackage{caption}
 % \RequirePackage{floatrow}
 \RequirePackage{sidenotes}
+\RequirePackage{marginfix}
 
 % Typography
 \RequirePackage[final]{microtype}
