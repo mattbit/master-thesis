@@ -6,5 +6,4 @@
     ItalicFont = MetaSerifPro-BookItalic,
     BoldFont = MetaSerifPro-Bold,
     BoldItalicFont = MetaSerifPro-BoldItalic,
-    SmallCapsFont = MetaSerifSC-Book
   }

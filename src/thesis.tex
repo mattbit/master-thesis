@@ -10,21 +10,13 @@
 \sisetup{detect-all,range-phrase={--},range-units=single}
 
 \usepackage{csquotes}
-\usepackage[backend=bibtex,style=numeric]{biblatex}
+
 \addbibresource{_bibliography.bib}
 
 \usepackage{graphicx}
 \graphicspath{{img/}}
 
-\DeclareFieldFormat[article,book,unpublished,misc]{title}{\mkbibemph{#1}}
-
-\DeclareCiteCommand{\mcite}{}{%
-   \sidenote[\usebibmacro{cite}]{\color{medium}\footnotesize\sffamily\raggedright%
-   \setunit{\addnbspace}
-   \printnames{labelname}%
-   \setunit{\labelnamepunct}
-   \printfield{title} (\printfield{year})}%
-}{}{}
+\usepackage{ccicons}
 
 % Title page
 \title{Analysis and modelling of biophysical processes\\from single-particle tracking data}
@@ -37,15 +29,17 @@
     marginpar=42mm,
   }
   \begin{center}
-    {\huge\textbf{\textsc{\MakeLowercase{Politecnico di Torino}}}}
+    {\huge\textsc{\MakeLowercase{Politecnico di Torino}}}
 
     \vspace*{9em}
 
     \large\textsc{master thesis}\\\textit{in Physics of Complex Systems}
 
     \vspace{3em}
-
-    {\huge\textbf{Analysis \& modelling of biophysical processes\\from single-particle tracking data}}
+    \begin{spacing}{1.8}
+      {\huge\textbf{Analysis \& modelling of biophysical processes\\
+      from single-particle tracking data}}
+    \end{spacing}
 
     \vspace{3em}
 
@@ -84,7 +78,31 @@
 
 \maketitle
 
+\pagestyle{empty}
+\begingroup
+\parindent 0pt
+\null\vfill
+
+\small
+
+Typeset by the author in Meta \& Meta Serif.
+
+\vspace{1em}
+
+\textcopyright{} Matteo Dora, 2018.
+
+\vspace{1em}
+
+\ccbyncsa
+\vspace{1mm}
+
+This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. To view a copy of this license, visit \url{http://creativecommons.org/licenses/by-nc-sa/4.0/} or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+\endgroup
+
+\begin{adjustwidth*}{}{1pc}
+\renewcommand{\contentsname}{Contents}
 \tableofcontents
+\end{adjustwidth*}
 
 \import{_chapters/}{1_introduction}
 \import{_chapters/}{2_data_analysis}
@@ -92,6 +110,12 @@
 \import{_chapters/}{conclusions}
 
 \addcontentsline{toc}{chapter}{Bibliography}
-\printbibliography
+\defbibheading{bibliography}[\bibname]{\chapter*{#1}\pagestyle{plain}}
+\printbibliography[title=Bibliography]
+
+\newpage
+\begin{center}
+  \textit{Ciao!}}
+\end{center}
 
 \end{document}
