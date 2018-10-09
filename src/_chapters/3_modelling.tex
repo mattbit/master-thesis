@@ -61,12 +61,14 @@ Numerical simulations of the model were performed to measure mean and extreme fi
 
 \begin{margintable}
   \sffamily
-  \begin{tabular}{@{}ll@{}}
+  \vspace{1em}
+  \begin{tabular*}{\textwidth}{@{}ll@{}}
+    \hline
     $\tau_{node}$   & \SI{100}{\milli\second}  \\
     \hline
     $\tau_{switch}$ & \SI{30}{\milli\second}  \\
     \hline
-  \end{tabular}
+  \end{tabular*}
   \caption{Values of model parameters.}\label{table:sim_params}
 \end{margintable}
 
@@ -93,7 +95,7 @@ where we neglected the time for diffusion $\tau_{node}$. We thus expect an incre
   \end{adjustwidth*}
 \end{figure}
 
-The value for the \tsc{MFPT} found in the simulations is surprising. On a graph with radius 40, a particle takes around \SI{1000}{\second} (on average) to arrive in a node that is just 10 steps away. This means a timescale of transport in the order of tens of minutes, or hours to reach the peripheral regions. While it is hard to say whether biological processes on the \tsc{ER} actually work at this slow timescale, we can speculate that since most of the cell functionings are faster the \tsc{MFPT} is not a sufficient parameter to charaterise them. When we instead consider the time to arrive for the first particle among a group of N (\tsc{EFPT}), the timescale drops to the order of seconds even for a group of 100 particles. With N = 1000, the time for the first to reach a target located 10 steps away is just slighly more than \SI{1}{\second}. This seems a much more reasonable timescale for an efficient biological process. We speculate that this kind of extreme statistics must have an important role in biology, as already noted in\mcite{reynaud2015,basnayake2017,basnayake2018}.
+The value for the \tsc{MFPT} found in the simulations is surprising. On a graph with radius 40, a particle takes around \SI{1000}{\second} (on average) to arrive in a node that is just 10 steps away. This means a timescale of transport in the order of tens of minutes, or hours to reach the peripheral regions. While it is hard to say whether biological processes on the \tsc{ER} actually work at this slow timescale, we can speculate that since most of the cell functionings are faster the \tsc{MFPT} is not a sufficient parameter to charaterise them. When we instead consider the time to arrive for the first particle among a group of N (\tsc{EFPT}), the timescale drops to the order of seconds even for a group of 100 particles. With N = 1000, the time for the first to reach a target located 10 steps away is just slighly more than \SI{1}{\second}. This seems a much more reasonable timescale for an efficient biological process. We speculate that this kind of extreme statistics must have an important role in biology, as already noted in \cite{reynaud2015,basnayake2017,basnayake2018}.
 
 An asymptotic formula for the \tsc{EFPT} has been described, for the continuous space, in \citetitle[p.~330]{holcman2018asymptotics}\mcite{holcman2018asymptotics}. The asymptotics in 2 dimensions reads:
 \begin{equation}
