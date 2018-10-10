@@ -76,11 +76,11 @@
 \hypersetup{pdfauthor={Matteo Dora}}
 
 \begin{document}
+\pagestyle{empty}
 \color{dark}
 
 \maketitle
 
-\pagestyle{empty}
 \begingroup
 \parindent 0pt
 \null\vfill
@@ -103,7 +103,7 @@ This work is licensed under the Creative Commons Attribution-NonCommercial-Share
 
 
 \begin{adjustwidth*}{}{1pc}
-\renewcommand{\contentsname}{Contents}
+\renewcommand{\contentsname}{Contents\cleardoublepage}
 \tableofcontents
 \end{adjustwidth*}
 
@@ -128,14 +128,12 @@ This work is licensed under the Creative Commons Attribution-NonCommercial-Share
 \import{_chapters/}{3_modelling}
 \import{_chapters/}{conclusions}
 
-\addcontentsline{toc}{chapter}{Bibliography}
-\defbibheading{bibliography}[\bibname]{\chapter*{#1}\pagestyle{plain}}
-\printbibliography[title=Bibliography]
+\cleardoublepage
 
-\newpage
-\pagestyle{empty}
-\begin{center}
-  \textit{Ciao!}
-\end{center}
+\addcontentsline{toc}{chapter}{Bibliography}
+\defbibheading{bibliography}[\bibname]{\chapter*{#1}\cleardoublepage}
+\pagestyle{bibliography}
+\printbibliography[title=Bibliography]
+\cleardoublepage
 
 \end{document}

@@ -75,6 +75,10 @@
     {}{}{\small\sffamily\ifthesection{\thesection\enskip}{}\sectiontitle}
   \setfoot*{}{}{\thepage}
 }
+\newpagestyle{bibliography}{
+  \sethead[Bibliography][][]{}{}{Bibliography}
+  \setfoot*{}{}{\thepage}
+}
 \renewpagestyle{plain}{
   \setfoot*{}{}{\thepage}
 }

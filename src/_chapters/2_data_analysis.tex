@@ -2,6 +2,7 @@
 
 \chapter{Data analysis}\label{sec:data_analysis}
 
+\section{A statistical framework for tracking data}
 
 The modern imaging methods introduced in chapter \ref{sec:introduction} have made possible to track simultaneously multiple particles at high spatiotemporal resolution. Single-particle tracking can then be used to reconstruct thousands of particle trajectories. To extract meaningful insights from this huge amount of data, we need a modelling and statistical framework.
 
@@ -9,7 +10,7 @@ In this chapter we will present data analysis techniques to reconstruct the dyna
 
 The data presented here was provided by the Molecular Neuroscience Group at the University of Cambridge, \tsc{UK}. It consists into trajectory fragments of Aβ-42 aggregates artificially injected in \tsc{HEK 293T} cells and captured via fast \tsc{SIM} (in 2d) at a frequency of \SI{8}{\hertz}. The trajectories were reconstructed from imaging data using the TrackMate software\mcite{trackmate}.
 
-\section{A statistical framework for tracking data}
+\section{Model and methods}
 
 At the microscopic level, the motion of the molecules can be described by Langevin's equation. In the case of biological processes we are interested in, the Langevin dynamics can be considered in its large friction limit (Smoluchowski's equation)\mcite{hoze2012, hoze2014}
 \begin{equation} \label{eq:smoluchowski}
