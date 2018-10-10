@@ -79,7 +79,7 @@
   \setfoot*{}{}{\thepage}
 }
 \newpagestyle{bibliography}{
-  \sethead[Bibliography][][]{}{}{Bibliography}
+  \sethead[\small\sffamily Bibliography][][]{}{}{\small\sffamily Bibliography}
   \setfoot*{}{}{\thepage}
 }
 \renewpagestyle{plain}{
