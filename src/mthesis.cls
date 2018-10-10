@@ -58,8 +58,11 @@
 
 % Page layout
 \geometry{
-  paperwidth=210mm,
-  paperheight=297mm,
+  paperwidth=216mm,
+  paperheight=303mm,
+  layout=a4paper,
+  layouthoffset=3mm,
+  layoutvoffset=3mm,
   twoside,
   inner=14mm,
   width=136mm,
@@ -103,11 +106,11 @@
   {%
     \null\vspace{26mm}
     \begin{adjustwidth}{}{8mm}
-    \raggedleft\chapterfamily
+    \raggedleft
   }
   {%
     \tikz[remember picture,overlay] \node[inner sep=0pt] at (current page.center){\includegraphics[width=216mm,height=303mm]{cover/\thechapter.png}};
-   {\color{white}\fontsize{96}{96}\selectfont\thechapter}}%
+   {\sffamily\bfseries\color{white}\fontsize{96}{96}\selectfont\thechapter}}%
   {9mm}%
   {%
     \raggedleft\chapterfamily\color{white}\fontsize{35}{35}\selectfont%
