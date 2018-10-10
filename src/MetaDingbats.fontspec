@@ -1,0 +1,6 @@
+\defaultfontfeatures[Meta Dingbats]
+  {
+    Path = fonts/,
+    Extension = .otf,
+    UprightFont = {FF Meta Pro - Dingbats}
+  }

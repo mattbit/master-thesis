@@ -1,0 +1,6 @@
+\defaultfontfeatures[Meta Pro Black]
+  {
+    Path = fonts/,
+    Extension = .otf,
+    UprightFont = {FF Meta Pro - Black},
+  }

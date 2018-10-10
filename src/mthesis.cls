@@ -40,7 +40,8 @@
 
 \setmainfont[Ligatures=TeX]{Meta Serif Pro}
 \setsansfont[Ligatures=TeX]{Meta Pro}
-\newfontfamily{\chapterfamily}{Meta Serif Pro Extra Bold}
+\newfontfamily{\chapterfamily}{Meta Pro Black}
+\newfontfamily{\dingfamily}{Meta Dingbats}
 \setmonofont{Source Code Pro}
 \setmathsfont(Digits,Latin,Greek)[Numbers={Lining,Proportional}]{Meta Serif Pro}
 
@@ -93,37 +94,30 @@
 % \definecolor{chaptergrey}{rgb}{0.7,0.7,0.7}
 \definecolor{chaptergrey}{rgb}{0.57, 0.64, 0.69}
 
+\assignpagestyle{\chapter}{empty}
 \titleformat{name=\chapter}[display]%
-  {\normalfont\hfuzz=\maxdimen}%
-  {\color{chaptergrey}%
-   \raggedleft%
-   \fontseries{bx}%
-   \fontsize{96}{96}\selectfont%
-   \setlength{\baselineskip}{\z@}%
-   \edef\@tempa{\chaptertitlename}%
-   \ifx\@tempa\chaptername\else%
-     \begingroup%
-     \fontseries{bx}%
-     \fontsize{18}{18}\selectfont%
-     \setlength{\baselineskip}{\z@}%
-     \raisebox{25pt}{\chaptertitlename\enskip}%
-     \endgroup%
-   \fi%
-   \thechapter}%
-  {-1.5pc}%
-  {%\ifodd\thepage\raggedleft\else\raggedright\fi%
-   \raggedleft%
-   \chapterfamily\fontshape{it}%
-   \fontsize{24}{24}\selectfont}%
-  [\addtocontents{loa}{\protect\addvspace{10pt}}]
+  {%
+    \null\vspace{26mm}
+    \begin{adjustwidth}{}{8mm}
+    \raggedleft\chapterfamily
+  }
+  {%
+    \tikz[remember picture,overlay] \node[inner sep=0pt] at (current page.center){\includegraphics[width=216mm,height=303mm]{cover/\thechapter.png}};
+   {\color{white}\fontsize{96}{96}\selectfont\thechapter}}%
+  {9mm}%
+  {%
+    \raggedleft\chapterfamily\color{white}\fontsize{35}{35}\selectfont%
+  }%
+  [\end{adjustwidth}\addtocontents{loa}{\protect\addvspace{10pt}}\newpage]
+
 \titleformat{name=\chapter,numberless}[display]%
   {\normalfont\hfuzz=\maxdimen}%
   {}%
   {-1pc}%
   {%\ifodd\thepage\raggedleft\else\raggedright\fi%
    \raggedleft%
-   \chapterfamily\fontshape{it}%
-   \fontsize{24}{24}\selectfont}
+   \chapterfamily%
+   \fontsize{35}{35}\selectfont}
 \titlespacing*{\chapter}{0pt}{*7}{*9}
 
 % Type
