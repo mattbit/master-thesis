@@ -1,5 +1,6 @@
 % !TEX program = xelatex
 \documentclass{mthesis}
+\usepackage[cam,noinfo,width=220mm,height=307mm,center]{crop}
 \usepackage[british]{babel}
 \usepackage{import}
 \usepackage[page,title]{appendix}
@@ -99,10 +100,27 @@ Typeset by the author in Meta \& Meta Serif.
 This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. To view a copy of this license, visit \url{http://creativecommons.org/licenses/by-nc-sa/4.0/} or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 \endgroup
 
+
 \begin{adjustwidth*}{}{1pc}
 \renewcommand{\contentsname}{Contents}
 \tableofcontents
 \end{adjustwidth*}
+
+\cleardoublepage
+\null
+\vspace{54mm}
+\begin{flushright}
+\large
+\parbox{100mm}{\textit{Les théories servent à irriter les philistins, à séduire les esthètes et à faire rire les autres.}}
+\vspace{0.8em}
+
+--- Amélie Nothomb, \textit{Le sabotage amoureux}
+\end{flushright}
+
+\clearpage
+
+\pagestyle{main}
+
 
 \import{_chapters/}{1_introduction}
 \import{_chapters/}{2_data_analysis}
@@ -114,8 +132,9 @@ This work is licensed under the Creative Commons Attribution-NonCommercial-Share
 \printbibliography[title=Bibliography]
 
 \newpage
+\pagestyle{empty}
 \begin{center}
-  \textit{Ciao!}}
+  \textit{Ciao!}
 \end{center}
 
 \end{document}
