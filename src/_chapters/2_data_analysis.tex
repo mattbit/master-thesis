@@ -4,11 +4,11 @@
 
 \section{A statistical framework for tracking data}
 
-The modern imaging methods introduced in chapter \ref{sec:introduction} have made possible to track simultaneously multiple particles at high spatiotemporal resolution. Single-particle tracking can then be used to reconstruct thousands of particle trajectories. To extract meaningful insights from this huge amount of data, we need a modelling and statistical framework.
+The modern imaging methods described in chapter \ref{sec:introduction} have made possible to track simultaneously multiple particles at high spatiotemporal resolution. Single-particle tracking can then be used to reconstruct thousands of particle trajectories. To extract meaningful insights from this huge amount of data, we need a modelling and statistical framework.
 
 In this chapter we will present data analysis techniques to reconstruct the dynamics of amyloid-β aggregates. As explained in section \ref{sec:alzheimer}, the uncontrolled formation of Aβ plaques in the brain tissue is thought to be a cause of Alzheimer's disease. What we would like to understand is how cells react to an excessive concentration of Aβ. How do they try to dispose of this dangerous products? We hypothesise that the cell transports and actively treats Aβ molecules for disposal in a well defined system. We tried to reconstruct the motion of Aβ molecules inside the cell to realise which route they follow and how they are treated. That said, the statistical methods described in the following aim to provide a general framework to extract dynamical parameters of particles at cell scale.
 
-The data presented here was provided by the Molecular Neuroscience Group at the University of Cambridge, \tsc{UK}. It consists into trajectory fragments of Aβ-42 aggregates artificially injected in \tsc{HEK 293T} cells and captured via fast \tsc{SIM} (in 2d) at a frequency of \SI{8}{\hertz}. The trajectories were reconstructed from imaging data using the TrackMate software\mcite{trackmate}.
+The data presented here was provided by the Molecular Neuroscience Group at the University of Cambridge, \tsc{UK}. It consists into trajectory fragments of Aβ-42 aggregates artificially injected in \tsc{HEK 293T} cells and captured via fast \tsc{SIM} (in \tsc{2d}) at a frequency of \SI{8}{\hertz}. The trajectories were reconstructed from imaging data using the TrackMate software.\mcite{trackmate}
 
 \section{Model and methods}
 
@@ -18,7 +18,7 @@ At the microscopic level, the motion of the molecules can be described by Langev
 \end{equation}
 where $\bm{F}(\bm{x})$ is the drift force exerted on the particle at position $\bm{x}$, $\gamma$ is the friction coefficient, $D$ is the diffusion coefficient and $\bm{w}(t)$ is a two-dimensional Wiener process. At this scale, it makes sense to consider the diffusion to be mainly due to thermal agitation so that it can be considered isotropic.
 
-However, it is not possible to directly recover the microscopic model from the \tsc{spt} data, since we miss information about the local behaviour both in space (such as the presence of microscopic obstacles undetected by the imaging device) and time (such as thermal fluctuations much faster than the acquisition timescale)\mcite{hoze2017, holcman2015}. We can still build a coarse-grained model\mcite{hoze2012, hoze2014}, transforming eq. \ref{eq:smoluchowski} into the effective stochastic equation
+However, it is not possible to directly recover the microscopic model from the \tsc{spt} data, since we miss information about the local behaviour both in space (such as the presence of microscopic obstacles undetected by the imaging device) and time (such as thermal fluctuations much faster than the acquisition timescale).\mcite{hoze2017, holcman2015} We can still build a coarse-grained model,\mcite{hoze2012, hoze2014} transforming eq. \ref{eq:smoluchowski} into the effective stochastic equation
 \begin{equation} \label{eq:effective}
  \dot{\bm{x}} = \bm{a}(\bm{x}) + \sqrt{2}\bm{B} \dot{\bm{w}}
 \end{equation}
@@ -37,8 +37,8 @@ where $\bm{a}(\bm{x})$ is the effective velocity field and $\bm{D} \equiv \bm{B}
 
 \subsection{Diffusion and velocity field estimation}
 
-To estimate the dynamical parameters of eq. \ref{eq:effective} a statistical analysis is needed. We follow the approach demonstrated in \cite{hoze2012, hoze2014, hoze2017, holcman2015} by partitioning the data in a square grid with fixed bin size. The velocity field and diffusion coefficients are considered constant in each bin.
-If the acquisition time interval is sufficiently small, the process described by eq. \ref{eq:effective} can be discretized following a forward Euler scheme:
+To estimate the dynamical parameters of eq. \ref{eq:effective} a statistical analysis is needed. We follow the approach demonstrated in \cite{hoze2012,hoze2014,hoze2017,holcman2015} by partitioning the data in a square grid with fixed bin size. The velocity field and diffusion coefficients are considered constant in each bin.
+If the acquisition time interval is sufficiently small, the process described by eq. \ref{eq:effective} can be discretised following a forward Euler scheme:
 \begin{equation}
  \bm{x}_{t+1} - \bm{x}_{t} = \bm{a}_{\Delta t}(\bm{x}_t) \Delta t + \sqrt{2\Delta t\bm{D}_{\Delta t}(\bm{x}_t)}  \bm{\eta}_t
 \end{equation}
@@ -74,94 +74,11 @@ Finally, bins such that the total number of samples in their Moore neighbourhood
 This approach can be interpreted in terms of Bayesian inference, where the prior (Gaussian) distribution of the parameter of interest is based on the distributions in the neighbouring bins. The mean estimator on the posterior is then obtained by averaging the means of the neighbours with a weight proportional to the number of samples.
 
 
-% \subsection{Regions of coherent motion}
-% \label{sec:regions_coherent_motion}
-%
-%
-%
-%
-%
-%
-% \subsection{Multiscale analysis}
-%
-% To investigate how the scale influences the detection of the features, the methods described in the previous sections were applied on different grid sizes. Two different datasets were analysed using bin sizes between \SI{100}{\nano\meter} and \SI{500}{\nano\meter}. Then, characteristics of both regions of coherent motion and potential wells were compared at different scales. An overview is shown in figure \ref{fig:multiscale_overview}.
-%
-% \begin{figure}[p]
-% \begin{wide}
-%     \begin{subfigure}[l]{5.33cm}
-%     	\caption{\SI{100}{\nano\meter} grid}\label{fig:ms_wells_100}
-%     	\includegraphics{img/spt/multiscale_100nm_wells.pdf}
-%     \end{subfigure}
-%     \begin{subfigure}[l]{5.33cm}
-%       	\caption{\SI{300}{\nano\meter} grid}\label{fig:ms_wells_300}
-%      	\includegraphics{spt/multiscale_300nm_wells.pdf}
-%     \end{subfigure}
-%     \begin{subfigure}[l]{5.33cm}
-%     	\caption{\SI{500}{\nano\meter} grid}\label{fig:ms_wells_500}
-%     	\includegraphics{spt/multiscale_500nm_wells.pdf}
-%     \end{subfigure}
-%
-%     \par\medskip
-%
-% 	\begin{subfigure}[l]{5.33cm}
-% 		\caption{}\label{fig:ms_cdr_100}
-%         \includegraphics{spt/multiscale_100nm_regions.pdf}
-%     \end{subfigure}
-%     \begin{subfigure}[l]{5.33cm}
-%       \caption{}\label{fig:ms_cdr_300}
-%       \includegraphics{spt/multiscale_300nm_regions.pdf}
-%     \end{subfigure}
-%     \begin{subfigure}[l]{5.33cm}
-%       \caption{}\label{fig:ms_cdr_500}
-%       \includegraphics{spt/multiscale_500nm_regions.pdf}
-%     \end{subfigure}
-%
-%     \par\medskip
-%
-%     \begin{subfigure}[l]{8cm}
-%       \caption{}\label{fig:ms_cdr_count}
-%       \includegraphics{spt/multiscale_regions_count.pdf}
-%     \end{subfigure}
-%     \begin{subfigure}[r]{8cm}
-%       	\caption{}\label{fig:ms_cdr_area}
-%       	\includegraphics{spt/multiscale_regions_area.pdf}
-%     \end{subfigure}
-%
-%     \par\medskip
-%
-% 	\begin{subfigure}[l]{8cm}
-% 		\caption{}\label{fig:ms_wells_count}
-% 		\includegraphics{spt/multiscale_wells_count.pdf}
-% 	\end{subfigure}
-% 	\begin{subfigure}[r]{8cm}
-% 	  	\caption{}\label{fig:ms_wells_score}
-% 	  	\includegraphics{spt/multiscale_wells_score.pdf}
-% 	\end{subfigure}
-%
-% 	\captionsetup{width=\widewidth}
-% 	\caption{
-% 		Multiscale overview on two datasets (D1, D2). \textbf{\subref{fig:ms_wells_100}, \subref{fig:ms_wells_300}, \subref{fig:ms_wells_500}} potential well detections in a subregion of D2;
-% 		\textbf{\subref{fig:ms_cdr_100}, \subref{fig:ms_cdr_300}, \subref{fig:ms_cdr_500}} regions of coherent motion in a subregion of D2;
-% 		\textbf{\subref{fig:ms_cdr_count}} number of regions of coherent motion detected;
-% 		\textbf{\subref{fig:ms_cdr_area}} distribution of the areas of the regions of coherent motion;
-% 		\textbf{\subref{fig:ms_wells_count}} number of potential wells with error score lower than 0.75;
-% 		\textbf{\subref{fig:ms_wells_score}} average error score of potential wells at different grid sizes.
-% 	}\label{fig:multiscale_overview}
-% \end{wide}
-% \end{figure}
-%
-%
-% \subsection{Discussion}
-%
-% The analysis has shown that there is no well defined pathway along which the Aβ aggregates are driven. Instead, the molecules follow complex itineraries, bouncing between different regions. The reconstruction of the network of attractors and regions of coherent motion of figure \ref{fig:graph} gives an idea of this underlying structure. It is thus not possible to identify a clear directionality or an accumulation region in the global motion. This may suggest that the processing of Aβ is delocalized and molecules are bounced between several loosely distributed processing units.
-%
-% Multiscale analysis reveals that regions of coherent velocity, given their non-locality, tends to persist across different choices of the grid size. Yet, both datasets show a plateau in the number of coherent velocity regions (\cref{fig:ms_cdr_count}) for grid sizes between \SI{300}{\nano\meter} and \SI{400}{\nano\meter}. This gives a hint about their actual scale. As the grid size is increased the clusters expand (\cref{fig:ms_cdr_area}, but they retain the network structure of figure \ref{fig:graph} as no prevalent directionality emerges (\cref{fig:ms_cdr_100,fig:ms_cdr_300,fig:ms_cdr_500}).  The localization of potential wells is instead very sensible to the grid size. This is expected and confirms their local nature. As the grid size is reduced, more and more local minima of the potential are found (\cref{fig:ms_wells_count}). The average error score of the wells is slightly decreasing as the grid size increases (\cref{fig:ms_wells_score}). This probably due the higher noise present at small grid sizes, where the number of datapoints in each bin is smaller.
-
 \section{Attractors}\label{sec:attractors}
 
-The first biophysical features that we want to identify are attracting regions. We would like to infer from the tracking data if there exist regions in the intracellular space where Aβ molecules are collected and, if so, we would like to characterise their dimension and attraction force. Note that in the microscopy images we are only able to see the fluorescent tags on the Aβ molecules and not the cell structure. Attracting regions may represent organelles where Aβ is collected for disposal. Being able to identify these regions may allow us to relate them to specific organelles (such as lysosomes) by looking at their distribution and time evolution.
+The first biophysical features that we want to identify are attracting regions. We would like to infer from the tracking data if there exist regions in the intracellular space where Aβ molecules are collected and, if so, we would like to characterise their dimension and attraction force. Note that in microscopy images we are only able to see the fluorescent tags on the Aβ molecules and not the cell structure. Attracting regions may represent organelles where Aβ is collected for disposal. Being able to identify these regions may allow us to relate them to specific organelles (such as lysosomes) by looking at their distribution and time evolution.
 
-To identify local attractors we use the methodology and formalism developed in\mcite{hoze2012, parutto_wells}. Considering the velocity field to be locally conservative, it can be described by the gradient of a scalar potential:
+To identify local attractors we use the methodology and formalism developed in \cite{hoze2012,parutto_wells}\hcite{hoze2012,parutto_wells}. Considering the velocity field to be locally conservative, it can be described by the gradient of a scalar potential:
 \begin{equation}
  \bm{a}(\bm{x}) = - \nabla U(\bm{x})
 \end{equation}
@@ -187,7 +104,7 @@ A parabolic error score $S$ indicating how much the potential well resembles a p
  S \equiv \frac{\mathrm{MSE}_k}{\sum_{\bm{x}_i \in \mathcal{E}_k} \|\bm{a}(\bm{x}_i)\|^2}
 \end{equation}
 where $S \in [0, 1]$ and $S = 0$ indicates a perfect fit.
-The initial high density regions are localized by using the \tsc{dbscan} clustering algorithm.
+The initial high density regions are localised by using the \tsc{dbscan} clustering algorithm.
 
 \begin{marginfigure}
   \includegraphics{spt/2_potential_well.eps}
@@ -219,17 +136,15 @@ We identified regions of coherent motion by clustering adjacent bins based on th
 
 \section{The full picture}\label{sec:full_picture}
 
-In the two previous sections we localised regions of attraction and pathways. One can hypothesise that the dynamics of Aβ is composite. Molecules may escape (by Brownian motion) from an attractor, then travel along a pathway and eventually drop into another attracting region. We considered this approach by connecting the regions of coherent motion and the potential wells to form a directed graph representing a rough dynamical map of the intracellular space.
+In the previous sections we localised regions of attraction and pathways. One can hypothesise that the dynamics of Aβ is composite. Molecules may escape (by Brownian motion) from an attractor, then travel along a pathway and eventually drop into another attracting region. We considered this approach by connecting the regions of coherent motion and the potential wells to form a directed graph representing a rough dynamical map of the intracellular space.
 
 First, the axis corresponding to the average direction of each region is computed; then the endpoints of the regions are connected to other endpoints or potential wells that are found in a small neighbourhood. The reconstructed structure is shown in \cref{fig:graph}.
 
 Sadly, the results of this approach are a bit disappointing: the dynamical map that we were able to reconstruct by linking attractors and pathways is very complex and apparently meaningless.
-
 \begin{figure}
   \sidecaption{Reconstruction of the dynamical structure. \subref{fig:graph_regions}\enskip coherent motion regions with main axis highlighted and attractors (in red), \subref{fig:graph_network}\enskip motion graph reconstructed by linking the regions of coherent motion and attractors.\label{fig:graph}}
   \includegraphics[width=\textwidth]{spt/graph.eps}
   {\phantomsubcaption{}\label{fig:graph_regions}}
   {\phantomsubcaption{}\label{fig:graph_network}}
 \end{figure}
-
-Although the methods to localise attractors and pathways described in \cref{sec:attractors,sec:pathways} were successful in their scope, the hope of identifying a global dynamics in the data seems vain. The analysis shows that there is no well defined pathway along which the Aβ aggregates are driven nor clear accumulation points. Instead, the molecules follow complex itineraries, bouncing between different regions. The reconstruction of the dynamical structure shown in \cref{fig:graph} gives an idea of the mess in the underlying motion. This leads us to formulate a new hypothesis. In fact, the behaviour may suggest that the processing of Aβ is highly delocalized, and molecules are bounced between several loosely distributed processing units. In the next chapter we will introduce a possible explanation for this behaviour, presenting a new model of motion and computing its characteristics.
+Although the methods to localise attractors and pathways described in \cref{sec:attractors,sec:pathways} were successful in their scope, the hope of identifying a global dynamics in the data seems vain. The analysis shows that there is no well defined pathway along which the Aβ aggregates are driven nor clear accumulation points. Instead, the molecules follow complex itineraries, bouncing between different regions. The reconstruction of the dynamical structure shown in \cref{fig:graph} gives an idea of the mess in the underlying motion. This leads us to formulate a new hypothesis. In fact, the behaviour may suggest that the processing of Aβ is highly delocalised, and molecules are bounced between several loosely distributed processing units. In the next chapter we will introduce a possible explanation for this behaviour, presenting a new model of motion and computing its characteristics.

@@ -16,7 +16,6 @@
 \LoadClass[11pt,fleqn]{extbook}
 
 % Packages
-\RequirePackage[draft]{fixme}
 \RequirePackage{geometry}
 \RequirePackage[hyphens]{url}
 \RequirePackage[clearempty,pagestyles,newlinetospace]{titlesec}
@@ -64,7 +63,7 @@
   layouthoffset=3mm,
   layoutvoffset=3mm,
   twoside,
-  inner=14mm,
+  inner=15mm,
   width=136mm,
   headsep=14mm,
   marginparsep=4mm,
@@ -109,7 +108,7 @@
     \raggedleft
   }
   {%
-    \tikz[remember picture,overlay] \node[inner sep=0pt] at (current page.center){\includegraphics[width=216mm,height=303mm]{cover/\thechapter.png}};
+    \tikz[remember picture,overlay] \node[inner sep=0pt] at (current page.center){\includegraphics[width=216mm,height=303mm]{cover/\thechapter.pdf}};
    {\sffamily\bfseries\color{white}\fontsize{96}{96}\selectfont\thechapter}}%
   {9mm}%
   {%
@@ -123,7 +122,7 @@
   {-1pc}%
   {%\ifodd\thepage\raggedleft\else\raggedright\fi%
    \raggedleft%
-   \chapterfamily%
+   \sffamily%
    \fontsize{35}{35}\selectfont}
 \titlespacing*{\chapter}{0pt}{*7}{*9}
 
